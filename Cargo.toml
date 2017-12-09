@@ -1,0 +1,6 @@
+[package]
+name = "advent-code"
+version = "0.1.0"
+authors = ["odoh <joshresch.cpp@gamil.com>"]
+
+[dependencies]
