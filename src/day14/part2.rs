@@ -74,16 +74,13 @@ fn regions(memory: &mut Memory) -> u32 {
     let mut regions = 0;
 
     // commit genocide
-    loop {
-        for r in 0..128 {
-            for c in 0..128 {
-                if killing_spree(memory, r, c) {
-                    regions += 1;
-                    continue;
-                }
+    for r in 0..128 {
+        for c in 0..128 {
+            if killing_spree(memory, r, c) {
+                regions += 1;
+                continue;
             }
         }
-        break;
     }
     regions
 }
