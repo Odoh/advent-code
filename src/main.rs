@@ -1,3 +1,9 @@
+mod day1;
+
+#[macro_use] extern crate maplit;
+
 fn main() {
-    println!("Advent of Code - 2018");
+    day1::part2::main();
+
+    println!("\nAdvent of Code - 2018");
 }
