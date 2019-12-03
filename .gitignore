@@ -1,0 +1,5 @@
+**/target/
+**/.idea/
+**/*.rs.bk
+**/*.rs.swp
+.DS_STORE
