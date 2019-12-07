@@ -1,4 +1,7 @@
 use itertools::Itertools;
+use std::sync::mpsc::{Sender, Receiver};
+use std::sync::mpsc;
+use std::thread;
 use std::io;
 
 const INSTRUCTION_POINTER_START: Address = 0;
@@ -8,6 +11,8 @@ type Address = usize;
 pub struct IntcodeComputer {
     memory: Vec<i32>,
     instruction_pointer: Address,
+    input: (Sender<i32>, Receiver<i32>),
+    output: (Sender<i32>, Receiver<i32>),
 }
 
 impl IntcodeComputer {
@@ -15,6 +20,8 @@ impl IntcodeComputer {
         IntcodeComputer {
             memory,
             instruction_pointer: INSTRUCTION_POINTER_START,
+            input: mpsc::channel(),
+            output: mpsc::channel(),
         }
     }
 
@@ -24,6 +31,16 @@ impl IntcodeComputer {
             .map(|s| s.parse::<i32>().expect(s))
             .collect::<Vec<i32>>();
         IntcodeComputer::new(memory)
+    }
+
+    pub fn input(&self, input: i32) {
+        let (tx, _) = &self.input;
+        tx.send(input).expect("Input value was sent")
+    }
+
+    pub fn output(&self) -> i32 {
+        let (_, rx) = &self.output;
+        rx.recv().expect("Output value recieved")
     }
 
     pub fn run(&mut self) {
@@ -39,7 +56,7 @@ impl IntcodeComputer {
 
     fn execute(&mut self, instruction: &Instruction) {
         let ip = self.instruction_pointer;
-        println!("IP {} Int {:?} = {:?}", ip, &self.memory[ip..ip + instruction.op_code.len()], instruction);
+//        println!("IP {} Int {:?} = {:?}", ip, &self.memory[ip..ip + instruction.op_code.len()], instruction);
 
         match instruction.op_code {
             OpCode::Addition => {
@@ -64,10 +81,8 @@ impl IntcodeComputer {
                 let p1 = self.memory[ip + 1];
                 let write_addr = p1 as usize;
 
-                println!("Provide input: ");
-                let mut input = String::new();
-                io::stdin().read_line(&mut input).unwrap();
-                let val: i32 = input.trim().parse().unwrap();
+                let (_, rx) = &self.input;
+                let val = rx.recv().expect("Output should be received");
 
                 self.memory[write_addr] = val;
                 self.instruction_pointer += instruction.op_code.len();
@@ -76,7 +91,9 @@ impl IntcodeComputer {
                 let p1 = self.memory[ip + 1];
                 let val = self.parameter_value(instruction.parameter_modes[0], p1);
 
-                println!("Output: {}", val);
+                let (tx, _) = &self.output;
+                tx.send(val).expect("Output should be sent");
+
                 self.instruction_pointer += instruction.op_code.len();
             },
             OpCode::JumpIfTrue => {

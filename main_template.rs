@@ -14,16 +14,3 @@ fn main() {
     part_one();
     part_two();
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_part_1() {
-    }
-
-    #[test]
-    fn test_part_2() {
-    }
-}

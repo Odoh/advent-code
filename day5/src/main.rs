@@ -4,13 +4,31 @@ use advent::cpu::IntcodeComputer;
 fn part_one() {
     let input = InputSnake::new("input");
     let mut cpu = IntcodeComputer::from(&input.no_snake());
+
+    cpu.input(1);
     cpu.run();
-    println!("Part One: {:?}", 1);
+    loop {
+        let output = cpu.output();
+        if output != 0 {
+            println!("Part One: {:?}", output);
+            return
+        }
+    }
 }
 
 fn part_two() {
     let input = InputSnake::new("input");
-    println!("Part Two: {:?}", 2)
+    let mut cpu = IntcodeComputer::from(&input.no_snake());
+
+    cpu.input(5);
+    cpu.run();
+    loop {
+        let output = cpu.output();
+        if output != 0 {
+            println!("Part Two: {:?}", output);
+            return
+        }
+    }
 }
 
 fn main() {
@@ -18,15 +36,3 @@ fn main() {
     part_two();
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_part_1() {
-    }
-
-    #[test]
-    fn test_part_2() {
-    }
-}

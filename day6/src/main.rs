@@ -30,10 +30,10 @@ impl Graph {
     }
 
     pub fn paths(&self, src: &str, dst: &str) -> Vec<Vec<String>> {
-        self.dfs_path_recur(src, dst, Vec::new())
+        self.bfs_path_recur(src, dst, Vec::new())
     }
 
-    fn dfs_path_recur(&self, src: &str, dst: &str, mut path: Vec<String>) -> Vec<Vec<String>> {
+    fn bfs_path_recur(&self, src: &str, dst: &str, mut path: Vec<String>) -> Vec<Vec<String>> {
         path.push(src.to_string());
 
         if src == dst {
@@ -42,7 +42,7 @@ impl Graph {
 
         self.adj_map.get(src).unwrap()
             .iter()
-            .flat_map(|v| self.dfs_path_recur(v, dst, path.clone()))
+            .flat_map(|v| self.bfs_path_recur(v, dst, path.clone()))
             .collect()
     }
 }
