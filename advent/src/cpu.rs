@@ -1,30 +1,74 @@
 use itertools::Itertools;
-use std::sync::mpsc::{Sender, Receiver};
-use std::sync::mpsc;
-use std::thread;
-use std::io;
+use tokio::sync::mpsc::{Sender, Receiver};
+use tokio::sync::mpsc;
+use tokio;
+use futures::join;
+use log::debug;
 
 const INSTRUCTION_POINTER_START: Address = 0;
+const CHANNEL_BUFFER_SIZE: usize = 100;
+const SHUTDOWN_SIGNAL: i32 = -123456789;
 
 type Address = usize;
 
 pub struct IntcodeComputer {
     memory: Vec<i32>,
     instruction_pointer: Address,
+
+    // Async channels for sending and receiving Input and Output.
+    // The Output of this computer may be piped to the Input of other computers.
     input: (Sender<i32>, Receiver<i32>),
-    output: (Sender<i32>, Receiver<i32>),
+    output: (Sender<i32>, Option<Receiver<i32>>),
+    pipe: Option<Pipe>,
+}
+
+#[derive(Debug)]
+struct Instruction {
+    op_code: OpCode,
+    parameter_modes: Vec<ParameterMode>,
+}
+
+
+#[derive(PartialEq, Copy, Clone, Debug)]
+enum ParameterMode {
+    Position,
+    Immediate,
+}
+
+
+#[derive(PartialEq, Copy, Clone, Debug)]
+enum OpCode {
+    Addition,
+    Multiplication,
+    Input,
+    Output,
+    JumpIfTrue,
+    JumpIfFalse,
+    LessThan,
+    Equals,
+    Halt,
+}
+
+struct Pipe {
+    src_output: Receiver<i32>,
+    dst_inputs: Vec<Sender<i32>>,
 }
 
 impl IntcodeComputer {
+    /// Construct a new computer with the given memory.
     pub fn new(memory: Vec<i32>) -> Self {
+        let (input_tx, input_rx) = mpsc::channel(CHANNEL_BUFFER_SIZE);
+        let (output_tx, output_rx) = mpsc::channel(CHANNEL_BUFFER_SIZE);
         IntcodeComputer {
             memory,
             instruction_pointer: INSTRUCTION_POINTER_START,
-            input: mpsc::channel(),
-            output: mpsc::channel(),
+            input: (input_tx, input_rx),
+            output: (output_tx, Some(output_rx)),
+            pipe: None,
         }
     }
 
+    /// Construct a new computer with the given serialized memory.
     pub fn from(s: &str) -> Self {
         let memory = s
             .split(",")
@@ -33,30 +77,76 @@ impl IntcodeComputer {
         IntcodeComputer::new(memory)
     }
 
-    pub fn input(&self, input: i32) {
-        let (tx, _) = &self.input;
-        tx.send(input).expect("Input value was sent")
+    /// Pipe the Output of this computer to the Input of `other_cpu`.
+    pub fn pipe_to(&mut self, other_cpu: &IntcodeComputer) {
+        if self.pipe.is_none() {
+            // the pipe now owns the Output Reciever
+            self.pipe = Some(Pipe::new(self.output.1.take().expect("Expect output to exist")))
+        }
+        self.pipe.as_mut().unwrap().add_pipe(other_cpu.input.0.clone())
     }
 
-    pub fn output(&self) -> i32 {
-        let (_, rx) = &self.output;
-        rx.recv().expect("Output value recieved")
+    /// Synchronously send `input` to this computer.
+    pub fn send_input(&mut self, input: i32) {
+        futures::executor::block_on(async {
+            let (tx, _) = &mut self.input;
+            tx.send(input).await.expect("Input value was sent")
+        })
     }
 
-    pub fn run(&mut self) {
+    /// Synchronously receive output from this computer.
+    pub fn recv_output(&mut self) -> i32 {
+        futures::executor::block_on(async {
+            let (_, rx) = &mut self.output;
+            rx.as_mut().expect("Output has already been taken").recv().await.expect("Output value recieved")
+        })
+    }
+
+    /// Synchronously receive any outstanding input to this computer.
+    pub fn recv_input(&mut self) -> i32 {
+        futures::executor::block_on(async {
+            let (_, rx) = &mut self.input;
+            rx.recv().await.expect("Output should be received")
+        })
+    }
+
+    /// Asynchonously run this computer and, if it exists, its pipe.
+    pub async fn run(self) -> Self {
+        let mut cpu = self;
+        if cpu.pipe.is_some() {
+            // a pipe exists, give the pipe runtask ownership
+            let mut pipe = cpu.pipe.take().unwrap();
+            cpu = (async { join!(pipe.run(), cpu.run_cpu()) }.await).1;
+            cpu.pipe = Some(pipe);
+        } else {
+            // no pipe exists exists
+            cpu = cpu.run_cpu().await;
+        }
+
+        return cpu
+    }
+
+    async fn run_cpu(mut self) -> Self {
         loop {
             let instruction = Instruction::from(self.memory[self.instruction_pointer]);
             if instruction.op_code == OpCode::Halt {
-                return
+                // if a pipe exists, send a shutdown signal to stop the pipe
+                if self.output.1.is_none() {
+                    futures::executor::block_on(async {
+                        let (tx, _) = &mut self.output;
+                        tx.send(SHUTDOWN_SIGNAL).await.expect("Output should be sent")
+                    });
+                }
+                return self;
             }
 
-            self.execute(&instruction);
+            self.execute(&instruction).await;
         }
     }
 
-    fn execute(&mut self, instruction: &Instruction) {
+    async fn execute(&mut self, instruction: &Instruction) {
         let ip = self.instruction_pointer;
-//        println!("IP {} Int {:?} = {:?}", ip, &self.memory[ip..ip + instruction.op_code.len()], instruction);
+        debug!("IP {} Int {:?} = {:?}", ip, &self.memory[ip..ip + instruction.op_code.len()], instruction);
 
         match instruction.op_code {
             OpCode::Addition => {
@@ -81,8 +171,8 @@ impl IntcodeComputer {
                 let p1 = self.memory[ip + 1];
                 let write_addr = p1 as usize;
 
-                let (_, rx) = &self.input;
-                let val = rx.recv().expect("Output should be received");
+                let (_, rx) = &mut self.input;
+                let val = rx.recv().await.expect("Output should be received");
 
                 self.memory[write_addr] = val;
                 self.instruction_pointer += instruction.op_code.len();
@@ -91,8 +181,8 @@ impl IntcodeComputer {
                 let p1 = self.memory[ip + 1];
                 let val = self.parameter_value(instruction.parameter_modes[0], p1);
 
-                let (tx, _) = &self.output;
-                tx.send(val).expect("Output should be sent");
+                let (tx, _) = &mut self.output;
+                tx.send(val).await.expect("Output should be sent");
 
                 self.instruction_pointer += instruction.op_code.len();
             },
@@ -124,7 +214,6 @@ impl IntcodeComputer {
                 let val2 = self.parameter_value(instruction.parameter_modes[1], p2);
                 let write_addr = p3 as usize;
 
-
                 self.memory[write_addr] = if val1 < val2 { 1 } else { 0 };
                 self.instruction_pointer += instruction.op_code.len();
             },
@@ -133,7 +222,6 @@ impl IntcodeComputer {
                 let val1 = self.parameter_value(instruction.parameter_modes[0], p1);
                 let val2 = self.parameter_value(instruction.parameter_modes[1], p2);
                 let write_addr = p3 as usize;
-
 
                 self.memory[write_addr] = if val1 == val2 { 1 } else { 0 };
                 self.instruction_pointer += instruction.op_code.len();
@@ -148,12 +236,6 @@ impl IntcodeComputer {
             ParameterMode::Immediate => parameter,
         }
     }
-}
-
-#[derive(Debug)]
-struct Instruction {
-    op_code: OpCode,
-    parameter_modes: Vec<ParameterMode>,
 }
 
 impl Instruction {
@@ -187,12 +269,6 @@ impl Instruction {
     }
 }
 
-#[derive(PartialEq, Copy, Clone, Debug)]
-enum ParameterMode {
-    Position,
-    Immediate,
-}
-
 impl ParameterMode {
     pub fn from(code: i32) -> Self {
         match code {
@@ -203,19 +279,6 @@ impl ParameterMode {
     }
 }
 
-
-#[derive(PartialEq, Copy, Clone, Debug)]
-enum OpCode {
-    Addition,
-    Multiplication,
-    Input,
-    Output,
-    JumpIfTrue,
-    JumpIfFalse,
-    LessThan,
-    Equals,
-    Halt,
-}
 
 impl OpCode {
     pub fn from(code: i32) -> Self {
@@ -245,5 +308,58 @@ impl OpCode {
             OpCode::Equals => 4,
             OpCode::Halt => 1,
         }
+    }
+}
+
+impl Pipe {
+    pub fn new(src_output: Receiver<i32>) -> Self {
+        Pipe {
+            src_output,
+            dst_inputs: Vec::new(),
+        }
+    }
+
+    pub fn add_pipe(&mut self, dst_input: Sender<i32>) {
+        self.dst_inputs.push(dst_input.clone())
+    }
+
+    pub async fn run(&mut self) {
+        loop {
+            if let Some(value) = self.src_output.recv().await {
+                if value == SHUTDOWN_SIGNAL {
+                    debug!("Pipe shutdown");
+                    return
+                }
+
+                debug!("Pipe sending: src -> {} -> dst", value);
+                for dst_input in self.dst_inputs.iter_mut() {
+                    dst_input.send(value).await.expect("Expect dst send to succeed");
+                }
+            } else {
+                debug!("Src program closed its output channel: stopping the pipe");
+                return
+            }
+        }
+    }
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    use tokio;
+    use futures::join;
+
+    #[test]
+    fn test_pipe() {
+        let mut runtime = tokio::runtime::Runtime::new().expect("runtime to initialize");
+        runtime.block_on(async {
+            let mut src_cpu = IntcodeComputer::from("4,0,4,0,99");
+            let mut dst_cpu = IntcodeComputer::from("3,1,3,2,99");
+
+            src_cpu.pipe_to(&mut dst_cpu);
+            tokio::spawn(async { join!(src_cpu.run(), dst_cpu.run()) });
+        });
     }
 }
