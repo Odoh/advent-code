@@ -6,19 +6,21 @@ use futures::join;
 use log::debug;
 
 const INSTRUCTION_POINTER_START: Address = 0;
+const RELATIVE_BASE_START: Address = 0;
 const CHANNEL_BUFFER_SIZE: usize = 100;
-const SHUTDOWN_SIGNAL: i32 = -123456789;
+const SHUTDOWN_SIGNAL: i64 = -123456789;
 
 type Address = usize;
 
 pub struct IntcodeComputer {
-    memory: Vec<i32>,
+    memory: Vec<i64>,
     instruction_pointer: Address,
+    relative_base: Address,
 
     // Async channels for sending and receiving Input and Output.
     // The Output of this computer may be piped to the Input of other computers.
-    input: (Sender<i32>, Receiver<i32>),
-    output: (Sender<i32>, Option<Receiver<i32>>),
+    input: (Sender<i64>, Receiver<i64>),
+    output: (Sender<i64>, Option<Receiver<i64>>),
     pipe: Option<Pipe>,
 }
 
@@ -33,6 +35,7 @@ struct Instruction {
 enum ParameterMode {
     Position,
     Immediate,
+    Relative,
 }
 
 
@@ -46,21 +49,23 @@ enum OpCode {
     JumpIfFalse,
     LessThan,
     Equals,
+    AdjustRelativeBase,
     Halt,
 }
 
 struct Pipe {
-    src_output: Receiver<i32>,
-    dst_inputs: Vec<Sender<i32>>,
+    src_output: Receiver<i64>,
+    dst_inputs: Vec<Sender<i64>>,
 }
 
 impl IntcodeComputer {
     /// Construct a new computer with the given memory.
-    pub fn new(memory: Vec<i32>) -> Self {
+    pub fn new(memory: Vec<i64>) -> Self {
         let (input_tx, input_rx) = mpsc::channel(CHANNEL_BUFFER_SIZE);
         let (output_tx, output_rx) = mpsc::channel(CHANNEL_BUFFER_SIZE);
         IntcodeComputer {
             memory,
+            relative_base: RELATIVE_BASE_START,
             instruction_pointer: INSTRUCTION_POINTER_START,
             input: (input_tx, input_rx),
             output: (output_tx, Some(output_rx)),
@@ -72,8 +77,8 @@ impl IntcodeComputer {
     pub fn from(s: &str) -> Self {
         let memory = s
             .split(",")
-            .map(|s| s.parse::<i32>().expect(s))
-            .collect::<Vec<i32>>();
+            .map(|s| s.parse::<i64>().expect(s))
+            .collect::<Vec<i64>>();
         IntcodeComputer::new(memory)
     }
 
@@ -87,7 +92,7 @@ impl IntcodeComputer {
     }
 
     /// Synchronously send `input` to this computer.
-    pub fn send_input(&mut self, input: i32) {
+    pub fn send_input(&mut self, input: i64) {
         futures::executor::block_on(async {
             let (tx, _) = &mut self.input;
             tx.send(input).await.expect("Input value was sent")
@@ -95,7 +100,7 @@ impl IntcodeComputer {
     }
 
     /// Synchronously receive output from this computer.
-    pub fn recv_output(&mut self) -> i32 {
+    pub fn recv_output(&mut self) -> i64 {
         futures::executor::block_on(async {
             let (_, rx) = &mut self.output;
             rx.as_mut().expect("Output has already been taken").recv().await.expect("Output value recieved")
@@ -103,7 +108,7 @@ impl IntcodeComputer {
     }
 
     /// Synchronously receive any outstanding input to this computer.
-    pub fn recv_input(&mut self) -> i32 {
+    pub fn recv_input(&mut self) -> i64 {
         futures::executor::block_on(async {
             let (_, rx) = &mut self.input;
             rx.recv().await.expect("Output should be received")
@@ -128,6 +133,7 @@ impl IntcodeComputer {
 
     async fn run_cpu(mut self) -> Self {
         loop {
+//            debug!("IP {} RB {} Memory {:?}", self.instruction_pointer, self.relative_base, self.memory);
             let instruction = Instruction::from(self.memory[self.instruction_pointer]);
             if instruction.op_code == OpCode::Halt {
                 // if a pipe exists, send a shutdown signal to stop the pipe
@@ -146,14 +152,23 @@ impl IntcodeComputer {
 
     async fn execute(&mut self, instruction: &Instruction) {
         let ip = self.instruction_pointer;
-        debug!("IP {} Int {:?} = {:?}", ip, &self.memory[ip..ip + instruction.op_code.len()], instruction);
+        debug!("IP {} RB {} Int {:?} = {:?}",
+               self.instruction_pointer,
+               self.relative_base,
+               &self.memory[ip..ip + instruction.op_code.len()],
+               instruction);
+
+        // Ensure this operation will have enough memory.
+        // Additional checks are performed when the parameter value is read from memory, and when
+        // writing to memory
+        self.ensure_memory_exists(ip + instruction.op_code.len());
 
         match instruction.op_code {
             OpCode::Addition => {
                 let (p1, p2, p3) = (1..=3).map(|i| self.memory[ip + i]).tuples().next().unwrap();
                 let val1 = self.parameter_value(instruction.parameter_modes[0], p1);
                 let val2 = self.parameter_value(instruction.parameter_modes[1], p2);
-                let write_addr = p3 as usize;
+                let write_addr = self.parameter_value_address(instruction.parameter_modes[2], p3);
 
                 self.memory[write_addr] = val1 + val2;
                 self.instruction_pointer += instruction.op_code.len();
@@ -162,14 +177,14 @@ impl IntcodeComputer {
                 let (p1, p2, p3) = (1..=3).map(|i| self.memory[ip + i]).tuples().next().unwrap();
                 let val1 = self.parameter_value(instruction.parameter_modes[0], p1);
                 let val2 = self.parameter_value(instruction.parameter_modes[1], p2);
-                let write_addr = p3 as usize;
+                let write_addr = self.parameter_value_address(instruction.parameter_modes[2], p3);
 
                 self.memory[write_addr] = val1 * val2;
                 self.instruction_pointer += instruction.op_code.len();
             },
             OpCode::Input => {
                 let p1 = self.memory[ip + 1];
-                let write_addr = p1 as usize;
+                let write_addr = self.parameter_value_address(instruction.parameter_modes[0], p1);
 
                 let (_, rx) = &mut self.input;
                 let val = rx.recv().await.expect("Output should be received");
@@ -212,7 +227,7 @@ impl IntcodeComputer {
                 let (p1, p2, p3) = (1..=3).map(|i| self.memory[ip + i]).tuples().next().unwrap();
                 let val1 = self.parameter_value(instruction.parameter_modes[0], p1);
                 let val2 = self.parameter_value(instruction.parameter_modes[1], p2);
-                let write_addr = p3 as usize;
+                let write_addr = self.parameter_value_address(instruction.parameter_modes[2], p3);
 
                 self.memory[write_addr] = if val1 < val2 { 1 } else { 0 };
                 self.instruction_pointer += instruction.op_code.len();
@@ -221,19 +236,68 @@ impl IntcodeComputer {
                 let (p1, p2, p3) = (1..=3).map(|i| self.memory[ip + i]).tuples().next().unwrap();
                 let val1 = self.parameter_value(instruction.parameter_modes[0], p1);
                 let val2 = self.parameter_value(instruction.parameter_modes[1], p2);
-                let write_addr = p3 as usize;
+                let write_addr = self.parameter_value_address(instruction.parameter_modes[2], p3);
 
                 self.memory[write_addr] = if val1 == val2 { 1 } else { 0 };
                 self.instruction_pointer += instruction.op_code.len();
             },
+            OpCode::AdjustRelativeBase => {
+                let p1 = self.memory[ip + 1];
+                let val = self.parameter_value(instruction.parameter_modes[0], p1);
+
+                if val > 0 {
+                    self.relative_base += val as usize;
+                } else {
+                    self.relative_base -= (val * -1) as usize;
+                }
+                self.instruction_pointer += instruction.op_code.len();
+            }
             OpCode::Halt => (),
         }
     }
 
-    fn parameter_value(&self, parameter_mode: ParameterMode, parameter: i32) -> i32 {
+    fn parameter_value(&mut self, parameter_mode: ParameterMode, parameter: i64) -> i64 {
         match parameter_mode {
-            ParameterMode::Position => self.memory[parameter as usize],
+            ParameterMode::Position => {
+                let address = self.parameter_value_address(parameter_mode, parameter);
+                self.memory[address]
+            },
             ParameterMode::Immediate => parameter,
+            ParameterMode::Relative => {
+                let address = self.parameter_value_address(parameter_mode, parameter);
+                self.memory[address]
+            }
+        }
+    }
+
+    fn parameter_value_address(&mut self, parameter_mode: ParameterMode, parameter: i64) -> usize {
+        match parameter_mode {
+            ParameterMode::Position => {
+                let address = parameter as usize;
+                self.ensure_memory_exists(address);
+                address
+            },
+            ParameterMode::Relative => {
+                if parameter > 0 {
+                    let address = self.relative_base + parameter as usize;
+                    self.ensure_memory_exists(address);
+                    address
+                } else {
+                    let address = self.relative_base - (parameter * -1) as usize;
+                    address
+                }
+            },
+            ParameterMode::Immediate => panic!("Immediate parameter mode cannot be used for addresses")
+        }
+    }
+
+    /// Allocate additional memory, with 0s, if necessary
+    fn ensure_memory_exists(&mut self, address: Address) {
+        debug!("ensure_memory_exists for {} and {}", address, self.memory.len());
+        while address >= self.memory.len() {
+            debug!("Increasing memory");
+            let mut additional_memory = vec![0; self.memory.len()];
+            self.memory.append(&mut additional_memory);
         }
     }
 }
@@ -246,7 +310,7 @@ impl Instruction {
         }
     }
 
-    pub fn from(int_instruction: i32) -> Self {
+    pub fn from(int_instruction: i64) -> Self {
         // Instruction Format: ABCDE 1002
         //     DE - two-digit opcode,      02 == opcode 2
         //     C - mode of 1st parameter,  0 == position mode
@@ -259,21 +323,22 @@ impl Instruction {
         let param_modes = vec![param_1_mode, param_2_mode, param_3_mode];
 
         // "Parameters that an instruction writes to will never be in immediate mode."
-        assert!(if op_code == OpCode::Addition { param_3_mode == ParameterMode::Position } else { true });
-        assert!(if op_code == OpCode::Multiplication { param_3_mode == ParameterMode::Position } else { true });
-        assert!(if op_code == OpCode::Input { param_1_mode == ParameterMode::Position } else { true });
-        assert!(if op_code == OpCode::LessThan { param_3_mode == ParameterMode::Position } else { true });
-        assert!(if op_code == OpCode::Equals { param_3_mode == ParameterMode::Position } else { true });
+        assert!(if op_code == OpCode::Addition { param_3_mode != ParameterMode::Immediate } else { true });
+        assert!(if op_code == OpCode::Multiplication { param_3_mode != ParameterMode::Immediate } else { true });
+        assert!(if op_code == OpCode::Input { param_1_mode != ParameterMode::Immediate } else { true });
+        assert!(if op_code == OpCode::LessThan { param_3_mode != ParameterMode::Immediate } else { true });
+        assert!(if op_code == OpCode::Equals { param_3_mode != ParameterMode::Immediate } else { true });
 
         Instruction::new(op_code, param_modes[..(op_code.len() - 1)].to_vec())
     }
 }
 
 impl ParameterMode {
-    pub fn from(code: i32) -> Self {
+    pub fn from(code: i64) -> Self {
         match code {
             0 => ParameterMode::Position,
             1 => ParameterMode::Immediate,
+            2 => ParameterMode::Relative,
             _ => panic!("Unhandled ParameterMode {}", code),
         }
     }
@@ -281,7 +346,7 @@ impl ParameterMode {
 
 
 impl OpCode {
-    pub fn from(code: i32) -> Self {
+    pub fn from(code: i64) -> Self {
         match code {
             1 => OpCode::Addition,
             2 => OpCode::Multiplication,
@@ -291,6 +356,7 @@ impl OpCode {
             6 => OpCode::JumpIfFalse,
             7 => OpCode::LessThan,
             8 => OpCode::Equals,
+            9 => OpCode::AdjustRelativeBase,
             99 => OpCode::Halt,
             _ => panic!("Unhandled OpCode {}", code),
         }
@@ -306,20 +372,21 @@ impl OpCode {
             OpCode::JumpIfFalse => 3,
             OpCode::LessThan => 4,
             OpCode::Equals => 4,
+            OpCode::AdjustRelativeBase => 2,
             OpCode::Halt => 1,
         }
     }
 }
 
 impl Pipe {
-    pub fn new(src_output: Receiver<i32>) -> Self {
+    pub fn new(src_output: Receiver<i64>) -> Self {
         Pipe {
             src_output,
             dst_inputs: Vec::new(),
         }
     }
 
-    pub fn add_pipe(&mut self, dst_input: Sender<i32>) {
+    pub fn add_pipe(&mut self, dst_input: Sender<i64>) {
         self.dst_inputs.push(dst_input.clone())
     }
 

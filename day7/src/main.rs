@@ -4,7 +4,7 @@ use std::cell::RefCell;
 use advent::InputSnake;
 use advent::cpu::IntcodeComputer;
 
-const INITIAL_INPUT_SIGNAL: i32 = 0;
+const INITIAL_INPUT_SIGNAL: i64 = 0;
 
 pub struct Amplifier {
     // Amplifiers are CPUs which take in two inputs:
@@ -12,11 +12,11 @@ pub struct Amplifier {
     // 2. an input signal
     // Then an output signal is returned
     cpu: Option<IntcodeComputer>,
-    phase: i32,
+    phase: i64,
 }
 
 impl Amplifier {
-    pub fn from(memory: &str, phase: i32) -> Self {
+    pub fn from(memory: &str, phase: i64) -> Self {
         let mut cpu = IntcodeComputer::from(memory);
         cpu.send_input(phase);
         Amplifier {
@@ -25,12 +25,12 @@ impl Amplifier {
         }
     }
 
-    pub fn phase(&self) -> i32 {
+    pub fn phase(&self) -> i64 {
         self.phase
     }
 
     /// Run an amplifier using the given input_signal and returning the final output signal
-    pub fn run_with_signal(mut self, input_signal: i32) -> i32 {
+    pub fn run_with_signal(mut self, input_signal: i64) -> i64 {
         self.send_signal(input_signal);
         self = futures::executor::block_on(self.run());
         self.output_signal()
@@ -38,17 +38,17 @@ impl Amplifier {
 
 
     /// Synchronously send a signal to the Amplifier
-    pub fn send_signal(&mut self, input_signal: i32) {
+    pub fn send_signal(&mut self, input_signal: i64) {
         self.cpu.as_mut().unwrap().send_input(input_signal);
     }
 
     /// Synchronously get the output signal of the Amplifier
-    pub fn output_signal(&mut self) -> i32 {
+    pub fn output_signal(&mut self) -> i64 {
         self.cpu.as_mut().unwrap().recv_output()
     }
 
     /// HACK - synchronously get an unprocessed input signal
-    pub fn input_signal(&mut self) -> i32 {
+    pub fn input_signal(&mut self) -> i64 {
         self.cpu.as_mut().unwrap().recv_input()
     }
 
@@ -72,7 +72,7 @@ fn connect(src_amp: &RefCell<Amplifier>, dst_amp: &RefCell<Amplifier>) {
     src_amp.borrow_mut().connect_to(&dst_amp.borrow())
 }
 
-fn run_amplifiers(amplifiers: Vec<Amplifier>, initial_input_signal: i32) -> i32 {
+fn run_amplifiers(amplifiers: Vec<Amplifier>, initial_input_signal: i64) -> i64 {
     let mut signal = initial_input_signal;
     for amplifier in amplifiers.into_iter() {
         signal = amplifier.run_with_signal(signal);
@@ -80,7 +80,7 @@ fn run_amplifiers(amplifiers: Vec<Amplifier>, initial_input_signal: i32) -> i32 
     signal
 }
 
-fn run_amplifiers_with_feedback(mut amplifiers: Vec<Amplifier>, initial_input_signal: i32) -> i32 {
+fn run_amplifiers_with_feedback(mut amplifiers: Vec<Amplifier>, initial_input_signal: i64) -> i64 {
     let mut runtime = tokio::runtime::Runtime::new().expect("runtime to initialize");
 
     // create connections between adjacent amplifiers + the last to first amplifier
