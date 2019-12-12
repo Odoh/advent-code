@@ -8,7 +8,7 @@ fn part_one() {
     let mut cpu = cpu::IntcodeComputer::from(&input.no_snake());
 
     cpu.send_input(1);
-    cpu = executor::block_on(cpu.run());
+    executor::block_on(cpu.run());
     let output = cpu.recv_output();
 
     println!("Part One: {:?}", output);
@@ -19,7 +19,7 @@ fn part_two() {
     let mut cpu = cpu::IntcodeComputer::from(&input.no_snake());
 
     cpu.send_input(2);
-    cpu = executor::block_on(cpu.run());
+    executor::block_on(cpu.run());
     let output = cpu.recv_output();
 
     println!("Part Two: {:?}", output);

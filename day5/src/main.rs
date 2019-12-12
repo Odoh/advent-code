@@ -7,7 +7,7 @@ fn part_one() {
     let mut cpu = IntcodeComputer::from(&input.no_snake());
 
     cpu.send_input(1);
-    cpu = futures::executor::block_on(cpu.run());
+    futures::executor::block_on(cpu.run());
     loop {
         let output = cpu.recv_output();
         if output != 0 {
@@ -22,7 +22,7 @@ fn part_two() {
     let mut cpu = IntcodeComputer::from(&input.no_snake());
 
     cpu.send_input(5);
-    cpu = futures::executor::block_on(cpu.run());
+    futures::executor::block_on(cpu.run());
     loop {
         let output = cpu.recv_output();
         if output != 0 {

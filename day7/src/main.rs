@@ -11,7 +11,7 @@ pub struct Amplifier {
     // 1. a phase
     // 2. an input signal
     // Then an output signal is returned
-    cpu: Option<IntcodeComputer>,
+    cpu: IntcodeComputer,
     phase: i64,
 }
 
@@ -20,7 +20,7 @@ impl Amplifier {
         let mut cpu = IntcodeComputer::from(memory);
         cpu.send_input(phase);
         Amplifier {
-            cpu: Some(cpu),
+            cpu,
             phase,
         }
     }
@@ -32,38 +32,34 @@ impl Amplifier {
     /// Run an amplifier using the given input_signal and returning the final output signal
     pub fn run_with_signal(mut self, input_signal: i64) -> i64 {
         self.send_signal(input_signal);
-        self = futures::executor::block_on(self.run());
+        futures::executor::block_on(self.run());
         self.output_signal()
     }
 
 
     /// Synchronously send a signal to the Amplifier
     pub fn send_signal(&mut self, input_signal: i64) {
-        self.cpu.as_mut().unwrap().send_input(input_signal);
+        self.cpu.send_input(input_signal);
     }
 
     /// Synchronously get the output signal of the Amplifier
     pub fn output_signal(&mut self) -> i64 {
-        self.cpu.as_mut().unwrap().recv_output()
+        self.cpu.recv_output()
     }
 
     /// HACK - synchronously get an unprocessed input signal
     pub fn input_signal(&mut self) -> i64 {
-        self.cpu.as_mut().unwrap().recv_input()
+        self.cpu.recv_input()
     }
 
     /// Connect the output signal of this amplifier to the input signal of `other_amplifier`.
     pub fn connect_to(&mut self, other_amplifier: &Amplifier) {
-        self.cpu.as_mut().unwrap().pipe_to(&other_amplifier.cpu.as_ref().unwrap())
+        self.cpu.pipe_to(&other_amplifier.cpu)
     }
 
     /// Asynchronously run the amplifier
-    pub async fn run(mut self) -> Self {
-        let mut cpu = self.cpu.take().unwrap();
-        cpu = cpu.run().await;
-
-        self.cpu = Some(cpu);
-        self
+    pub async fn run(&mut self) {
+        self.cpu.run().await;
     }
 }
 
@@ -93,8 +89,8 @@ fn run_amplifiers_with_feedback(mut amplifiers: Vec<Amplifier>, initial_input_si
 
     // sent the initial input signal then run each amplifier
     amplifiers.first_mut().expect("Expect at least one amplifier").send_signal(initial_input_signal);
-    amplifiers = runtime.block_on(async {
-        futures::future::join_all(amplifiers.into_iter().map(|amplifier| amplifier.run())).await
+    runtime.block_on(async {
+        futures::future::join_all(amplifiers.iter_mut().map(|amplifier| amplifier.run())).await
     });
 
     // due to the last amplifier being connected to the first amplifier, its final output_signal

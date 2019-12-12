@@ -2,7 +2,6 @@ use itertools::Itertools;
 use tokio::sync::mpsc::{Sender, Receiver};
 use tokio::sync::mpsc;
 use tokio;
-use futures::join;
 use log::debug;
 
 const INSTRUCTION_POINTER_START: Address = 0;
@@ -19,9 +18,14 @@ pub struct IntcodeComputer {
 
     // Async channels for sending and receiving Input and Output.
     // The Output of this computer may be piped to the Input of other computers.
-    input: (Sender<i64>, Receiver<i64>),
+    input: (Option<Sender<i64>>, Receiver<i64>),
     output: (Sender<i64>, Option<Receiver<i64>>),
     pipe: Option<Pipe>,
+}
+
+pub struct Proxy {
+    input_tx: Sender<i64>,
+    output_rx: Receiver<i64>,
 }
 
 #[derive(Debug)]
@@ -67,7 +71,7 @@ impl IntcodeComputer {
             memory,
             relative_base: RELATIVE_BASE_START,
             instruction_pointer: INSTRUCTION_POINTER_START,
-            input: (input_tx, input_rx),
+            input: (Some(input_tx), input_rx),
             output: (output_tx, Some(output_rx)),
             pipe: None,
         }
@@ -88,14 +92,21 @@ impl IntcodeComputer {
             // the pipe now owns the Output Reciever
             self.pipe = Some(Pipe::new(self.output.1.take().expect("Expect output to exist")))
         }
-        self.pipe.as_mut().unwrap().add_pipe(other_cpu.input.0.clone())
+        self.pipe.as_mut().unwrap().add_pipe(other_cpu.input.0.as_ref().unwrap().clone())
+    }
+
+    /// Return a proxy which forwards to the input and output of this computer.
+    pub fn proxy(&mut self) -> Proxy {
+        let input_tx = self.input.0.take().expect("Expect input to not be taken");
+        let output_rx = self.output.1.take().expect("Expect output to not be taken");
+        Proxy::new(input_tx, output_rx)
     }
 
     /// Synchronously send `input` to this computer.
     pub fn send_input(&mut self, input: i64) {
         futures::executor::block_on(async {
             let (tx, _) = &mut self.input;
-            tx.send(input).await.expect("Input value was sent")
+            tx.as_mut().expect("Input has already been taken").send(input).await.expect("Input value was sent")
         })
     }
 
@@ -116,34 +127,31 @@ impl IntcodeComputer {
     }
 
     /// Asynchonously run this computer and, if it exists, its pipe.
-    pub async fn run(self) -> Self {
-        let mut cpu = self;
-        if cpu.pipe.is_some() {
+    pub async fn run(&mut self) {
+        if self.pipe.is_some() {
             // a pipe exists, give the pipe runtask ownership
-            let mut pipe = cpu.pipe.take().unwrap();
-            cpu = (async { join!(pipe.run(), cpu.run_cpu()) }.await).1;
-            cpu.pipe = Some(pipe);
+            let mut pipe = self.pipe.take().unwrap();
+            futures::future::join(pipe.run(), self.run_cpu()).await;
+            self.pipe = Some(pipe);
         } else {
             // no pipe exists exists
-            cpu = cpu.run_cpu().await;
+            self.run_cpu().await;
         }
-
-        return cpu
     }
 
-    async fn run_cpu(mut self) -> Self {
+    async fn run_cpu(&mut self) {
         loop {
 //            debug!("IP {} RB {} Memory {:?}", self.instruction_pointer, self.relative_base, self.memory);
             let instruction = Instruction::from(self.memory[self.instruction_pointer]);
             if instruction.op_code == OpCode::Halt {
-                // if a pipe exists, send a shutdown signal to stop the pipe
+                // if a pipe or proxy exists exists, send a shutdown signal to stop them
                 if self.output.1.is_none() {
                     futures::executor::block_on(async {
                         let (tx, _) = &mut self.output;
                         tx.send(SHUTDOWN_SIGNAL).await.expect("Output should be sent")
                     });
                 }
-                return self;
+                return
             }
 
             self.execute(&instruction).await;
@@ -187,7 +195,7 @@ impl IntcodeComputer {
                 let write_addr = self.parameter_value_address(instruction.parameter_modes[0], p1);
 
                 let (_, rx) = &mut self.input;
-                let val = rx.recv().await.expect("Output should be received");
+                let val = rx.recv().await.expect("Input should be received");
 
                 self.memory[write_addr] = val;
                 self.instruction_pointer += instruction.op_code.len();
@@ -293,12 +301,36 @@ impl IntcodeComputer {
 
     /// Allocate additional memory, with 0s, if necessary
     fn ensure_memory_exists(&mut self, address: Address) {
-        debug!("ensure_memory_exists for {} and {}", address, self.memory.len());
         while address >= self.memory.len() {
             debug!("Increasing memory");
             let mut additional_memory = vec![0; self.memory.len()];
             self.memory.append(&mut additional_memory);
         }
+    }
+}
+
+impl Proxy {
+    fn new(input_tx: Sender<i64>, output_rx: Receiver<i64>) -> Self {
+        Proxy {
+            input_tx,
+            output_rx,
+        }
+    }
+
+    /// Asynchonrously send `input` to computer behind this proxy.
+    pub async fn send(&mut self, input: i64) {
+        self.input_tx.send(input).await.expect("Input value was sent");
+    }
+
+    /// Asynchronously receive output from this computer behind this proxy.
+    /// None returned when the CPU has halted.
+    pub async fn recv(&mut self) -> Option<i64> {
+        let value = self.output_rx.recv().await.expect("Output value recieved");
+        if value == SHUTDOWN_SIGNAL {
+            debug!("Pipe shutdown");
+            return None;
+        }
+        Some(value)
     }
 }
 
@@ -411,6 +443,7 @@ impl Pipe {
 }
 
 
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -426,7 +459,7 @@ mod tests {
             let mut dst_cpu = IntcodeComputer::from("3,1,3,2,99");
 
             src_cpu.pipe_to(&mut dst_cpu);
-            tokio::spawn(async { join!(src_cpu.run(), dst_cpu.run()) });
+            futures::future::join(src_cpu.run(), dst_cpu.run()).await;
         });
     }
 }

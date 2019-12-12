@@ -7,7 +7,7 @@ fn part_one() {
 
 fn part_two() {
     let input = InputSnake::new("input");
-    println!("Part Two: {:?}", 2)
+    println!("Part Two: {:?}", 2);
 }
 
 fn main() {
