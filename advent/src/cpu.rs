@@ -24,7 +24,16 @@ pub struct IntcodeComputer {
 }
 
 pub struct Proxy {
+    input_proxy: InputProxy,
+    output_proxy: OutputProxy,
+}
+
+#[derive(Clone)]
+pub struct InputProxy {
     input_tx: Sender<i64>,
+}
+
+pub struct OutputProxy {
     output_rx: Receiver<i64>,
 }
 
@@ -86,6 +95,12 @@ impl IntcodeComputer {
         IntcodeComputer::new(memory)
     }
 
+    /// Set the memory at the given address.
+    pub fn set_memory(&mut self, address: Address, value: i64) {
+        self.ensure_memory_exists(address);
+        self.memory[address] = value;
+    }
+
     /// Pipe the Output of this computer to the Input of `other_cpu`.
     pub fn pipe_to(&mut self, other_cpu: &IntcodeComputer) {
         if self.pipe.is_none() {
@@ -97,9 +112,21 @@ impl IntcodeComputer {
 
     /// Return a proxy which forwards to the input and output of this computer.
     pub fn proxy(&mut self) -> Proxy {
+        let input_proxy = self.input_proxy();
+        let output_proxy = self.output_proxy();
+        Proxy::new(input_proxy, output_proxy)
+    }
+
+    /// Return a proxy which forwards to the input of this computer.
+    pub fn input_proxy(&mut self) -> InputProxy {
         let input_tx = self.input.0.take().expect("Expect input to not be taken");
+        InputProxy::new(input_tx)
+    }
+
+    /// Return a proxy which forwards to the output of this computer.
+    pub fn output_proxy(&mut self) -> OutputProxy {
         let output_rx = self.output.1.take().expect("Expect output to not be taken");
-        Proxy::new(input_tx, output_rx)
+        OutputProxy::new(output_rx)
     }
 
     /// Synchronously send `input` to this computer.
@@ -310,16 +337,43 @@ impl IntcodeComputer {
 }
 
 impl Proxy {
-    fn new(input_tx: Sender<i64>, output_rx: Receiver<i64>) -> Self {
+    fn new(input_proxy: InputProxy, output_proxy: OutputProxy) -> Self {
         Proxy {
+            input_proxy,
+            output_proxy,
+        }
+    }
+
+    /// Asynchonrously send `input` to computer behind this proxy.
+    pub async fn send(&mut self, input: i64) {
+        self.input_proxy.send(input).await;
+    }
+
+    /// Asynchronously receive output from this computer behind this proxy.
+    /// None returned when the CPU has halted.
+    pub async fn recv(&mut self) -> Option<i64> {
+        self.output_proxy.recv().await
+    }
+}
+
+impl InputProxy {
+    fn new(input_tx: Sender<i64>) -> Self {
+        InputProxy {
             input_tx,
-            output_rx,
         }
     }
 
     /// Asynchonrously send `input` to computer behind this proxy.
     pub async fn send(&mut self, input: i64) {
         self.input_tx.send(input).await.expect("Input value was sent");
+    }
+}
+
+impl OutputProxy {
+    fn new(output_rx: Receiver<i64>) -> Self {
+        OutputProxy {
+            output_rx,
+        }
     }
 
     /// Asynchronously receive output from this computer behind this proxy.

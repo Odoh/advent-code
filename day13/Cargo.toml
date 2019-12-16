@@ -1,5 +1,5 @@
 [package]
-name = "advent"
+name = "day13"
 version = "0.1.0"
 authors = ["Josh Resch <jrresch@amazon.com>"]
 edition = "2018"
@@ -8,7 +8,9 @@ edition = "2018"
 
 [dependencies]
 itertools = "0.8"
-tokio = { version = "0.2", features = ["full"] }
 futures = "0.3"
-log = "0.4"
-pancurses = "0.16"
+env_logger = "0.5"
+tokio = { version = "0.2", features = ["full"] }
+
+[dependencies.advent]
+path = "../advent"
