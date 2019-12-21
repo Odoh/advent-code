@@ -1,10 +1,11 @@
 use std::collections::{HashMap, HashSet};
 use pancurses::Window;
+use log::debug;
 
 pub use pancurses::Input;
 pub type Coord = (i64, i64);
 
-pub struct Grid<T> {
+pub struct Grid<T: std::fmt::Debug> {
     coord_to_entry: HashMap<Coord, T>,
     not_drawn_coords: HashSet<Coord>,
     min_x: i64, max_x: i64,
@@ -32,7 +33,7 @@ pub struct ReadProxy {
     input_window: Window,
 }
 
-impl <T> Grid<T> {
+impl <T: std::fmt::Debug> Grid<T> {
     pub fn new() -> Grid<T> {
         Grid {
             coord_to_entry: HashMap::new(),
@@ -42,6 +43,10 @@ impl <T> Grid<T> {
             window: None,
             input_window: None,
         }
+    }
+
+    pub fn entry(&self, coord: Coord) -> Option<&T> {
+        self.coord_to_entry.get(&coord)
     }
 
     pub fn entries(&self) -> Vec<&T> {
@@ -65,6 +70,7 @@ impl <T> Grid<T> {
             self.max_y = coord.1;
         }
 
+        debug!("Add entry: {:?} at {:?}", entry, coord);
         self.coord_to_entry.insert(coord, entry);
         self.not_drawn_coords.insert(coord);
     }
@@ -95,15 +101,22 @@ impl <T> Grid<T> {
                 if self.not_drawn_coords.contains(&coord) {
                     self.not_drawn_coords.remove(&coord);
 
+                    if let DrawType::Curses(window) = self.draw_type() {
+                        let entry = self.coord_to_entry.get(&coord);
+                        if let Some(c) = entry_char(coord, entry) {
+                            window.mvaddch(y as i32, x as i32, c);
+                            window.refresh();
+                        }
+                    }
+                    continue;
+                }
+
+                if self.draw_type() == DrawType::StdOut {
                     let entry = self.coord_to_entry.get(&coord);
                     if let Some(c) = entry_char(coord, entry) {
-                        match self.draw_type() {
-                            DrawType::Curses(window) => {
-                                window.mvaddch(y as i32, x as i32, c);
-                                window.refresh();
-                            },
-                            DrawType::StdOut => print!("{}", c),
-                        }
+                        print!("{}", c);
+                    } else {
+                        print!(" ");
                     }
                 }
             }
