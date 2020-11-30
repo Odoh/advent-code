@@ -1,16 +1,22 @@
+use log::{SetLoggerError, LevelFilter};
+use log::{debug, info, warn, error};
+use env_logger;
+
 use advent::InputSnake;
 
 fn part_one() {
     let input = InputSnake::new("input");
-    println!("Part One: {:?}", 1);
+    info!("Part One: {:?}", 1);
 }
 
 fn part_two() {
     let input = InputSnake::new("input");
-    println!("Part Two: {:?}", 2);
+    info!("Part Two: {:?}", 2);
 }
 
 fn main() {
+    env_logger::init_from_env(env_logger::Env::default()
+        .filter_or(env_logger::DEFAULT_FILTER_ENV, "debug"));
     part_one();
     part_two();
 }
