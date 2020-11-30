@@ -2,7 +2,6 @@ use std::fs::File;
 use std::io::{BufReader, BufRead};
 use std::path::{Path, PathBuf};
 
-pub mod cpu;
 pub mod grid;
 
 pub struct InputSnake {
