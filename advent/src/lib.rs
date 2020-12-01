@@ -22,6 +22,11 @@ impl InputSnake {
         return Box::new(f.lines().map(|l| l.unwrap()))
     }
 
+    /// 🔢🐍
+    pub fn int_snake(&self) -> Box<dyn Iterator<Item = i64>> {
+        return Box::new(self.snake().map(|s| s.parse::<i64>().unwrap()));
+    }
+
     /// ❌🐍
     pub fn no_snake(&self) -> String {
         return std::fs::read_to_string(&self.path).expect("Unable to open file at path")
