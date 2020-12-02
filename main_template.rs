@@ -1,8 +1,10 @@
-use log::{SetLoggerError, LevelFilter};
 use log::{debug, info, warn, error};
 use env_logger;
+use regex::Captures;
 
-use advent::InputSnake;
+use std::fmt::Debug;
+
+use advent::{InputSnake, FromRegex};
 
 fn part_one() {
     let input = InputSnake::new("input");
