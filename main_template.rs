@@ -1,7 +1,9 @@
 use log::{debug, info, warn, error};
+use itertools::Itertools;
 use env_logger;
 use regex::Captures;
 
+use std::collections::HashSet;
 use std::fmt::Debug;
 
 use advent::{InputSnake, FromRegex};

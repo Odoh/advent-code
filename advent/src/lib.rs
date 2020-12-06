@@ -1,7 +1,6 @@
 use regex::{Captures, Regex};
 
-use std::fs::File;
-use std::io::{BufReader, BufRead};
+use std::{io::{BufReader, BufRead}, fs::File};
 use std::path::{Path, PathBuf};
 
 pub mod grid;
@@ -12,6 +11,44 @@ pub trait FromRegex {
 
 pub struct InputSnake {
     path: PathBuf,
+}
+
+pub struct GroupIterator {
+    line_iter: Box<dyn Iterator<Item = String>>,
+}
+
+impl GroupIterator {
+    pub fn new(line_iter: Box<dyn Iterator<Item = String>>) -> Self {
+        GroupIterator {
+            line_iter,
+        }
+    }
+}
+
+impl Iterator for GroupIterator {
+    type Item = Vec<String>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let mut group = Vec::new();
+        loop {
+            let line = match self.line_iter.next() {
+                None => {
+                    return if group.is_empty() {
+                        None
+                    } else {
+                        Some(group)
+                    };
+                }
+                Some(line) => line,
+            };
+
+            if line.is_empty() {
+                return Some(group);
+            }
+
+            group.push(line)
+        }
+    }
 }
 
 impl InputSnake {
@@ -25,12 +62,12 @@ impl InputSnake {
     pub fn snake(&self) -> Box<dyn Iterator<Item = String>> {
         let f = File::open(&self.path).expect("Unable to open file at path");
         let f = BufReader::new(f);
-        return Box::new(f.lines().map(|l| l.unwrap()))
+        Box::new(f.lines().map(|l| l.unwrap()))
     }
 
     /// 🔢🐍
     pub fn int_snake(&self) -> Box<dyn Iterator<Item = i64>> {
-        return Box::new(self.snake().map(|s| s.parse::<i64>().unwrap()));
+        Box::new(self.snake().map(|s| s.parse::<i64>().unwrap()))
     }
 
     /// ✱🐍
@@ -38,13 +75,20 @@ impl InputSnake {
         let regex = Regex::new(regex_str).unwrap();
         let items = self.snake()
             .map(move |s| FromRegex::from(regex.captures(&s).unwrap()));
-        return Box::new(items);
+        Box::new(items)
+    }
+
+    /// (🐍)
+    pub fn group_snake(&self) -> Box<dyn Iterator<Item = Vec<String>>> {
+        Box::new(GroupIterator {
+            line_iter: Box::new(self.snake())
+        })
     }
 
     /// ❌🐍
     pub fn no_snake(&self) -> String {
-        return std::fs::read_to_string(&self.path).expect("Unable to open file at path")
+        std::fs::read_to_string(&self.path).expect("Unable to open file at path")
             .trim()
-            .to_string();
+            .to_string()
     }
 }
