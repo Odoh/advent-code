@@ -1,4 +1,4 @@
-use regex::{Captures, Regex};
+use regex::{CaptureMatches, Regex};
 
 use std::{io::{BufReader, BufRead}, fs::File};
 use std::path::{Path, PathBuf};
@@ -6,7 +6,7 @@ use std::path::{Path, PathBuf};
 pub mod grid;
 
 pub trait FromRegex {
-    fn from(captures: Captures) -> Self;
+    fn from(capture_matches: CaptureMatches) -> Self;
 }
 
 pub struct InputSnake {
@@ -74,7 +74,7 @@ impl InputSnake {
     pub fn regex_snake<T: FromRegex>(&self, regex_str: &'static str) -> Box<dyn Iterator<Item = T>> {
         let regex = Regex::new(regex_str).unwrap();
         let items = self.snake()
-            .map(move |s| FromRegex::from(regex.captures(&s).unwrap()));
+            .map(move |s| FromRegex::from(regex.captures_iter(&s)));
         Box::new(items)
     }
 

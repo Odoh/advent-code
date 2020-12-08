@@ -1,7 +1,7 @@
 use log::{SetLoggerError, LevelFilter};
 use log::{debug, info, warn, error};
 use env_logger;
-use regex::Captures;
+use regex::CaptureMatches;
 
 use std::fmt::Debug;
 
@@ -36,7 +36,8 @@ impl PasswordPolicy {
 }
 
 impl FromRegex for Input {
-    fn from(captures: Captures) -> Self {
+    fn from(mut capture_matches: CaptureMatches) -> Self {
+        let captures = capture_matches.next().unwrap();
         let password_policy = PasswordPolicy {
             min: captures.get(1).unwrap().as_str().parse::<usize>().unwrap(),
             max: captures.get(2).unwrap().as_str().parse::<usize>().unwrap(),
