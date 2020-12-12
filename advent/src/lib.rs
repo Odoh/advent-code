@@ -4,6 +4,7 @@ use std::{io::{BufReader, BufRead}, fs::File};
 use std::path::{Path, PathBuf};
 
 pub mod grid;
+pub mod map;
 
 pub trait FromRegex {
     fn from(capture_matches: CaptureMatches) -> Self;
@@ -83,6 +84,18 @@ impl InputSnake {
         Box::new(GroupIterator {
             line_iter: Box::new(self.snake())
         })
+    }
+
+    /// 🐍🐍
+    /// 🐍🐍
+    pub fn grid_snake(&self) -> grid::Grid<char> {
+        let mut grid= grid::Grid::new();
+        self.snake()
+            .enumerate()
+            .for_each(|(x, line)| line.chars().enumerate()
+                .for_each(|(y, c)|
+                    grid.add_entry((x as i64, y as i64), c)));
+        grid
     }
 
     /// ❌🐍

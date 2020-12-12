@@ -5,6 +5,8 @@ use log::debug;
 pub use pancurses::Input;
 pub type Coord = (i64, i64);
 
+pub const DRAW_CHAR: fn (Coord, Option<&char>) -> Option<char> = |_, c| c.map(|&c| c);
+
 pub struct Grid<T: std::fmt::Debug> {
     coord_to_entry: HashMap<Coord, T>,
     not_drawn_coords: HashSet<Coord>,
@@ -17,6 +19,48 @@ pub struct Grid<T: std::fmt::Debug> {
 pub enum DrawType<'a> {
     Curses(&'a Window),
     StdOut,
+}
+
+const ALL_DIRECTIONS: [Direction; 8] = [
+    Direction::Left,
+    Direction::Right,
+    Direction::Up,
+    Direction::Down,
+    Direction::UpLeft,
+    Direction::UpRight,
+    Direction::DownLeft,
+    Direction::DownRight,
+];
+
+#[derive(Debug, Copy, Clone)]
+pub enum Direction {
+    Left,
+    Right,
+    Up,
+    Down,
+    UpLeft,
+    UpRight,
+    DownLeft,
+    DownRight,
+}
+
+impl Direction {
+    pub fn next_coord(self, coord: Coord) -> Coord {
+        self.next_coord_by_value(coord, 1)
+    }
+
+    pub fn next_coord_by_value(self, coord: Coord, value: i64) -> Coord {
+        match self {
+            Direction::Left => (coord.0 - value, coord.1),
+            Direction::Right => (coord.0 + value, coord.1),
+            Direction::Up => (coord.0, coord.1 - value),
+            Direction::Down => (coord.0, coord.1 + value),
+            Direction::UpLeft => (coord.0 - value, coord.1 - value),
+            Direction::UpRight => (coord.0 + value, coord.1 - value),
+            Direction::DownLeft => (coord.0 - value, coord.1 + value),
+            Direction::DownRight => (coord.0 + value, coord.1 + value),
+        }
+    }
 }
 
 impl <'a> PartialEq for DrawType<'a> {
@@ -51,6 +95,34 @@ impl <T: std::fmt::Debug> Grid<T> {
 
     pub fn entries(&self) -> Vec<&T> {
         self.coord_to_entry.values().collect()
+    }
+
+    pub fn coord_entries(&self) -> Vec<(Coord, &T)> {
+        self.coord_to_entry.iter().map(|(c, t)| (*c, t)).collect()
+    }
+
+    pub fn directional_entries(&self, mut coord: Coord, direction: Direction) -> Vec<&T> {
+        let mut entries = Vec::new();
+        loop {
+            coord = direction.next_coord(coord);
+            if let Some(entry) = self.entry(coord) {
+                entries.push(entry);
+            } else {
+                return entries;
+            }
+        }
+    }
+
+    pub fn all_directional_entries(&self, coord: Coord) -> Vec<Vec<&T>> {
+        ALL_DIRECTIONS.iter()
+            .map(|&direction| self.directional_entries(coord, direction))
+            .collect()
+    }
+
+    pub fn adjacent_entries(&self, coord: Coord) -> Vec<&T> {
+        ALL_DIRECTIONS.iter()
+            .filter_map(|direction| self.entry(direction.next_coord(coord)))
+            .collect()
     }
 
     pub fn max_xy(&self) -> (i64, i64) {
@@ -98,6 +170,16 @@ impl <T: std::fmt::Debug> Grid<T> {
             for y in self.min_y..=self.max_y {
                 let coord: Coord = (x, y);
 
+                if self.draw_type() == DrawType::StdOut {
+                    let entry = self.coord_to_entry.get(&coord);
+                    if let Some(c) = entry_char(coord, entry) {
+                        print!("{}", c);
+                    } else {
+                        print!(" ");
+                    }
+                    continue;
+                }
+
                 if self.not_drawn_coords.contains(&coord) {
                     self.not_drawn_coords.remove(&coord);
 
@@ -107,16 +189,6 @@ impl <T: std::fmt::Debug> Grid<T> {
                             window.mvaddch(y as i32, x as i32, c);
                             window.refresh();
                         }
-                    }
-                    continue;
-                }
-
-                if self.draw_type() == DrawType::StdOut {
-                    let entry = self.coord_to_entry.get(&coord);
-                    if let Some(c) = entry_char(coord, entry) {
-                        print!("{}", c);
-                    } else {
-                        print!(" ");
                     }
                 }
             }
