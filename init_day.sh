@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 APP_NAME="day$1"
-INPUT_URL="https://adventofcode.com/2020/day/$1/input"
+INPUT_URL="https://adventofcode.com/2023/day/$1/input"
 
 SESSION_ID=`cat .session_id`
 TEMPLATE_FILE="main_template.rs"
