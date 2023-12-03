@@ -1,0 +1,7305 @@
+warning: field `starting_direction` is never read
+  --> /Users/jrresch/advent-code/advent/src/map.rs:29:5
+   |
+28 | pub struct Viewpoint {
+   |            --------- field in this struct
+29 |     starting_direction: Direction,
+   |     ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: `advent` (lib) generated 1 warning
+warning: unused imports: `debug`, `error`, `warn`
+ --> src/main.rs:2:11
+  |
+2 | use log::{debug, info, warn, error};
+  |           ^^^^^        ^^^^  ^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused import: `itertools::Itertools`
+ --> src/main.rs:3:5
+  |
+3 | use itertools::Itertools;
+  |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `regex::CaptureMatches`
+ --> src/main.rs:5:5
+  |
+5 | use regex::CaptureMatches;
+  |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `once_cell::sync::Lazy`
+ --> src/main.rs:6:5
+  |
+6 | use once_cell::sync::Lazy;
+  |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `BTreeMap`
+ --> src/main.rs:8:42
+  |
+8 | use std::collections::{HashMap, HashSet, BTreeMap};
+  |                                          ^^^^^^^^
+
+warning: unused import: `FromRegex`
+  --> src/main.rs:11:26
+   |
+11 | use advent::{InputSnake, FromRegex, grid::Grid};
+   |                          ^^^^^^^^^
+
+warning: unreachable expression
+   --> src/main.rs:160:5
+    |
+158 |     todo!();
+    |     ------- any code following this expression is unreachable
+159 |
+160 |     gears
+    |     ^^^^^ unreachable expression
+    |
+    = note: `#[warn(unreachable_code)]` on by default
+
+warning: function `is_symbol` is never used
+  --> src/main.rs:17:4
+   |
+17 | fn is_symbol(c: char) -> bool {
+   |    ^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: function `find_part_numbers` is never used
+  --> src/main.rs:29:4
+   |
+29 | fn find_part_numbers(grid: &mut Grid<char>) -> Vec<u32> {
+   |    ^^^^^^^^^^^^^^^^^
+
+warning: function `part_one_test` is never used
+  --> src/main.rs:65:4
+   |
+65 | fn part_one_test() {
+   |    ^^^^^^^^^^^^^
+
+warning: function `part_one` is never used
+  --> src/main.rs:75:4
+   |
+75 | fn part_one() {
+   |    ^^^^^^^^
+
+warning: field `coord` is never read
+  --> src/main.rs:94:5
+   |
+93 | struct Gear {
+   |        ---- field in this struct
+94 |     coord: Coord,
+   |     ^^^^^
+   |
+   = note: `Gear` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+
+warning: function `part_two_test` is never used
+   --> src/main.rs:163:4
+    |
+163 | fn part_two_test() {
+    |    ^^^^^^^^^^^^^
+
+warning: `day3` (bin "day3") generated 13 warnings (run `cargo fix --bin "day3"` to apply 6 suggestions)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.06s
+     Running `target/debug/day3`
+[2023-12-03T18:39:59Z INFO  day3] Part Two
+[src/main.rs:157] gears = [
+    Gear {
+        coord: (
+            30,
+            3,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    31,
+                    4,
+                ),
+                number: 350,
+            },
+            PartNumber {
+                coord: (
+                    29,
+                    6,
+                ),
+                number: 287,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            79,
+            136,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    80,
+                    139,
+                ),
+                number: 761,
+            },
+            PartNumber {
+                coord: (
+                    79,
+                    0,
+                ),
+                number: 824,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            52,
+            96,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    53,
+                    98,
+                ),
+                number: 804,
+            },
+            PartNumber {
+                coord: (
+                    51,
+                    98,
+                ),
+                number: 571,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            110,
+            54,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    111,
+                    56,
+                ),
+                number: 88,
+            },
+            PartNumber {
+                coord: (
+                    109,
+                    57,
+                ),
+                number: 509,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            121,
+            99,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    121,
+                    99,
+                ),
+                number: 878,
+            },
+            PartNumber {
+                coord: (
+                    120,
+                    103,
+                ),
+                number: 718,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            60,
+            87,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    59,
+                    88,
+                ),
+                number: 667,
+            },
+            PartNumber {
+                coord: (
+                    61,
+                    87,
+                ),
+                number: 963,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            138,
+            38,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    139,
+                    41,
+                ),
+                number: 642,
+            },
+            PartNumber {
+                coord: (
+                    137,
+                    42,
+                ),
+                number: 811,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            24,
+            24,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    25,
+                    28,
+                ),
+                number: 503,
+            },
+            PartNumber {
+                coord: (
+                    23,
+                    25,
+                ),
+                number: 644,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            83,
+            4,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    82,
+                    7,
+                ),
+                number: 68,
+            },
+            PartNumber {
+                coord: (
+                    82,
+                    4,
+                ),
+                number: 795,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            29,
+            29,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    30,
+                    29,
+                ),
+                number: 722,
+            },
+            PartNumber {
+                coord: (
+                    29,
+                    33,
+                ),
+                number: 961,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            79,
+            21,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    80,
+                    24,
+                ),
+                number: 124,
+            },
+            PartNumber {
+                coord: (
+                    78,
+                    22,
+                ),
+                number: 850,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            105,
+            35,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    106,
+                    39,
+                ),
+                number: 841,
+            },
+            PartNumber {
+                coord: (
+                    105,
+                    35,
+                ),
+                number: 985,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            64,
+            41,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    63,
+                    42,
+                ),
+                number: 390,
+            },
+            PartNumber {
+                coord: (
+                    65,
+                    42,
+                ),
+                number: 40,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            115,
+            7,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    114,
+                    8,
+                ),
+                number: 186,
+            },
+            PartNumber {
+                coord: (
+                    116,
+                    7,
+                ),
+                number: 85,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            61,
+            120,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    61,
+                    124,
+                ),
+                number: 980,
+            },
+            PartNumber {
+                coord: (
+                    62,
+                    120,
+                ),
+                number: 143,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            71,
+            135,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    71,
+                    139,
+                ),
+                number: 623,
+            },
+            PartNumber {
+                coord: (
+                    70,
+                    135,
+                ),
+                number: 795,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            136,
+            93,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    135,
+                    93,
+                ),
+                number: 583,
+            },
+            PartNumber {
+                coord: (
+                    135,
+                    96,
+                ),
+                number: 72,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            70,
+            46,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    71,
+                    48,
+                ),
+                number: 76,
+            },
+            PartNumber {
+                coord: (
+                    69,
+                    47,
+                ),
+                number: 447,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            125,
+            72,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    125,
+                    72,
+                ),
+                number: 450,
+            },
+            PartNumber {
+                coord: (
+                    124,
+                    76,
+                ),
+                number: 942,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            39,
+            69,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    40,
+                    71,
+                ),
+                number: 470,
+            },
+            PartNumber {
+                coord: (
+                    38,
+                    71,
+                ),
+                number: 457,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            44,
+            22,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    43,
+                    22,
+                ),
+                number: 750,
+            },
+            PartNumber {
+                coord: (
+                    45,
+                    26,
+                ),
+                number: 175,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            116,
+            94,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    116,
+                    94,
+                ),
+                number: 406,
+            },
+            PartNumber {
+                coord: (
+                    116,
+                    98,
+                ),
+                number: 767,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            34,
+            30,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    35,
+                    34,
+                ),
+                number: 206,
+            },
+            PartNumber {
+                coord: (
+                    33,
+                    34,
+                ),
+                number: 138,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            9,
+            39,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    8,
+                    42,
+                ),
+                number: 536,
+            },
+            PartNumber {
+                coord: (
+                    10,
+                    43,
+                ),
+                number: 400,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            55,
+            63,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    55,
+                    67,
+                ),
+                number: 218,
+            },
+            PartNumber {
+                coord: (
+                    55,
+                    63,
+                ),
+                number: 169,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            58,
+            70,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    59,
+                    71,
+                ),
+                number: 593,
+            },
+            PartNumber {
+                coord: (
+                    57,
+                    70,
+                ),
+                number: 671,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            119,
+            82,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    118,
+                    86,
+                ),
+                number: 295,
+            },
+            PartNumber {
+                coord: (
+                    119,
+                    82,
+                ),
+                number: 741,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            93,
+            5,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    92,
+                    7,
+                ),
+                number: 408,
+            },
+            PartNumber {
+                coord: (
+                    94,
+                    5,
+                ),
+                number: 904,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            64,
+            101,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    63,
+                    102,
+                ),
+                number: 779,
+            },
+            PartNumber {
+                coord: (
+                    65,
+                    104,
+                ),
+                number: 392,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            9,
+            135,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    9,
+                    135,
+                ),
+                number: 281,
+            },
+            PartNumber {
+                coord: (
+                    8,
+                    139,
+                ),
+                number: 260,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            70,
+            108,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    71,
+                    112,
+                ),
+                number: 627,
+            },
+            PartNumber {
+                coord: (
+                    69,
+                    109,
+                ),
+                number: 911,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            25,
+            117,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    24,
+                    118,
+                ),
+                number: 760,
+            },
+            PartNumber {
+                coord: (
+                    26,
+                    120,
+                ),
+                number: 138,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            115,
+            112,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    114,
+                    113,
+                ),
+                number: 344,
+            },
+            PartNumber {
+                coord: (
+                    116,
+                    116,
+                ),
+                number: 164,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            69,
+            67,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    68,
+                    67,
+                ),
+                number: 472,
+            },
+            PartNumber {
+                coord: (
+                    70,
+                    68,
+                ),
+                number: 810,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            21,
+            66,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    22,
+                    68,
+                ),
+                number: 22,
+            },
+            PartNumber {
+                coord: (
+                    20,
+                    69,
+                ),
+                number: 688,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            49,
+            133,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    48,
+                    134,
+                ),
+                number: 15,
+            },
+            PartNumber {
+                coord: (
+                    50,
+                    136,
+                ),
+                number: 231,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            124,
+            47,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    125,
+                    51,
+                ),
+                number: 201,
+            },
+            PartNumber {
+                coord: (
+                    124,
+                    47,
+                ),
+                number: 151,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            77,
+            74,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    77,
+                    74,
+                ),
+                number: 115,
+            },
+            PartNumber {
+                coord: (
+                    76,
+                    78,
+                ),
+                number: 124,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            19,
+            48,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    20,
+                    52,
+                ),
+                number: 468,
+            },
+            PartNumber {
+                coord: (
+                    18,
+                    49,
+                ),
+                number: 428,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            73,
+            86,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    74,
+                    86,
+                ),
+                number: 859,
+            },
+            PartNumber {
+                coord: (
+                    72,
+                    87,
+                ),
+                number: 851,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            42,
+            123,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    41,
+                    124,
+                ),
+                number: 346,
+            },
+            PartNumber {
+                coord: (
+                    43,
+                    123,
+                ),
+                number: 502,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            59,
+            23,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    58,
+                    26,
+                ),
+                number: 483,
+            },
+            PartNumber {
+                coord: (
+                    60,
+                    27,
+                ),
+                number: 469,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            103,
+            37,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    104,
+                    41,
+                ),
+                number: 894,
+            },
+            PartNumber {
+                coord: (
+                    102,
+                    37,
+                ),
+                number: 150,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            98,
+            4,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    97,
+                    8,
+                ),
+                number: 817,
+            },
+            PartNumber {
+                coord: (
+                    99,
+                    7,
+                ),
+                number: 611,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            36,
+            29,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    37,
+                    33,
+                ),
+                number: 391,
+            },
+            PartNumber {
+                coord: (
+                    36,
+                    29,
+                ),
+                number: 324,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            95,
+            33,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    94,
+                    37,
+                ),
+                number: 762,
+            },
+            PartNumber {
+                coord: (
+                    96,
+                    34,
+                ),
+                number: 2,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            116,
+            123,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    117,
+                    127,
+                ),
+                number: 785,
+            },
+            PartNumber {
+                coord: (
+                    115,
+                    123,
+                ),
+                number: 20,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            72,
+            114,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    71,
+                    117,
+                ),
+                number: 604,
+            },
+            PartNumber {
+                coord: (
+                    73,
+                    114,
+                ),
+                number: 805,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            13,
+            55,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    14,
+                    59,
+                ),
+                number: 339,
+            },
+            PartNumber {
+                coord: (
+                    14,
+                    55,
+                ),
+                number: 909,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            11,
+            104,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    11,
+                    104,
+                ),
+                number: 326,
+            },
+            PartNumber {
+                coord: (
+                    11,
+                    107,
+                ),
+                number: 93,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            4,
+            127,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    3,
+                    127,
+                ),
+                number: 647,
+            },
+            PartNumber {
+                coord: (
+                    5,
+                    131,
+                ),
+                number: 262,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            103,
+            52,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    104,
+                    56,
+                ),
+                number: 316,
+            },
+            PartNumber {
+                coord: (
+                    102,
+                    52,
+                ),
+                number: 80,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            92,
+            79,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    91,
+                    80,
+                ),
+                number: 618,
+            },
+            PartNumber {
+                coord: (
+                    93,
+                    83,
+                ),
+                number: 901,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            127,
+            9,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    128,
+                    9,
+                ),
+                number: 260,
+            },
+            PartNumber {
+                coord: (
+                    127,
+                    13,
+                ),
+                number: 537,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            18,
+            57,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    19,
+                    59,
+                ),
+                number: 877,
+            },
+            PartNumber {
+                coord: (
+                    17,
+                    57,
+                ),
+                number: 321,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            134,
+            115,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    135,
+                    118,
+                ),
+                number: 169,
+            },
+            PartNumber {
+                coord: (
+                    133,
+                    118,
+                ),
+                number: 831,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            88,
+            62,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    89,
+                    64,
+                ),
+                number: 114,
+            },
+            PartNumber {
+                coord: (
+                    87,
+                    66,
+                ),
+                number: 862,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            90,
+            35,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    91,
+                    36,
+                ),
+                number: 252,
+            },
+            PartNumber {
+                coord: (
+                    89,
+                    39,
+                ),
+                number: 819,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            67,
+            50,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    66,
+                    51,
+                ),
+                number: 638,
+            },
+            PartNumber {
+                coord: (
+                    68,
+                    51,
+                ),
+                number: 668,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            135,
+            17,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    135,
+                    20,
+                ),
+                number: 98,
+            },
+            PartNumber {
+                coord: (
+                    136,
+                    17,
+                ),
+                number: 559,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            49,
+            9,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    50,
+                    10,
+                ),
+                number: 351,
+            },
+            PartNumber {
+                coord: (
+                    48,
+                    13,
+                ),
+                number: 502,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            116,
+            106,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    116,
+                    110,
+                ),
+                number: 736,
+            },
+            PartNumber {
+                coord: (
+                    117,
+                    106,
+                ),
+                number: 404,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            102,
+            96,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    102,
+                    96,
+                ),
+                number: 515,
+            },
+            PartNumber {
+                coord: (
+                    102,
+                    99,
+                ),
+                number: 97,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            126,
+            77,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    126,
+                    77,
+                ),
+                number: 85,
+            },
+            PartNumber {
+                coord: (
+                    126,
+                    81,
+                ),
+                number: 106,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            16,
+            77,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    16,
+                    81,
+                ),
+                number: 734,
+            },
+            PartNumber {
+                coord: (
+                    16,
+                    77,
+                ),
+                number: 198,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            45,
+            76,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    44,
+                    80,
+                ),
+                number: 238,
+            },
+            PartNumber {
+                coord: (
+                    46,
+                    80,
+                ),
+                number: 479,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            81,
+            58,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    80,
+                    58,
+                ),
+                number: 278,
+            },
+            PartNumber {
+                coord: (
+                    82,
+                    60,
+                ),
+                number: 965,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            74,
+            26,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    73,
+                    26,
+                ),
+                number: 443,
+            },
+            PartNumber {
+                coord: (
+                    75,
+                    27,
+                ),
+                number: 513,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            68,
+            120,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    69,
+                    121,
+                ),
+                number: 880,
+            },
+            PartNumber {
+                coord: (
+                    67,
+                    121,
+                ),
+                number: 991,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            35,
+            110,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    36,
+                    112,
+                ),
+                number: 139,
+            },
+            PartNumber {
+                coord: (
+                    34,
+                    111,
+                ),
+                number: 404,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            92,
+            116,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    93,
+                    119,
+                ),
+                number: 25,
+            },
+            PartNumber {
+                coord: (
+                    92,
+                    116,
+                ),
+                number: 4,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            85,
+            62,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    86,
+                    62,
+                ),
+                number: 510,
+            },
+            PartNumber {
+                coord: (
+                    84,
+                    63,
+                ),
+                number: 852,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            89,
+            125,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    88,
+                    126,
+                ),
+                number: 220,
+            },
+            PartNumber {
+                coord: (
+                    90,
+                    128,
+                ),
+                number: 927,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            125,
+            105,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    126,
+                    105,
+                ),
+                number: 16,
+            },
+            PartNumber {
+                coord: (
+                    126,
+                    109,
+                ),
+                number: 969,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            114,
+            28,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    114,
+                    32,
+                ),
+                number: 779,
+            },
+            PartNumber {
+                coord: (
+                    113,
+                    28,
+                ),
+                number: 682,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            103,
+            119,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    102,
+                    121,
+                ),
+                number: 199,
+            },
+            PartNumber {
+                coord: (
+                    104,
+                    120,
+                ),
+                number: 838,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            132,
+            44,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    133,
+                    47,
+                ),
+                number: 142,
+            },
+            PartNumber {
+                coord: (
+                    131,
+                    46,
+                ),
+                number: 81,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            129,
+            15,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    128,
+                    16,
+                ),
+                number: 48,
+            },
+            PartNumber {
+                coord: (
+                    130,
+                    15,
+                ),
+                number: 61,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            94,
+            136,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    94,
+                    0,
+                ),
+                number: 157,
+            },
+            PartNumber {
+                coord: (
+                    94,
+                    136,
+                ),
+                number: 566,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            56,
+            36,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    55,
+                    37,
+                ),
+                number: 691,
+            },
+            PartNumber {
+                coord: (
+                    57,
+                    37,
+                ),
+                number: 345,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            35,
+            129,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    36,
+                    130,
+                ),
+                number: 196,
+            },
+            PartNumber {
+                coord: (
+                    34,
+                    129,
+                ),
+                number: 448,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            106,
+            83,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    105,
+                    86,
+                ),
+                number: 964,
+            },
+            PartNumber {
+                coord: (
+                    107,
+                    85,
+                ),
+                number: 934,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            18,
+            129,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    19,
+                    131,
+                ),
+                number: 197,
+            },
+            PartNumber {
+                coord: (
+                    17,
+                    129,
+                ),
+                number: 717,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            101,
+            60,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    100,
+                    64,
+                ),
+                number: 339,
+            },
+            PartNumber {
+                coord: (
+                    102,
+                    62,
+                ),
+                number: 474,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            55,
+            108,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    55,
+                    108,
+                ),
+                number: 46,
+            },
+            PartNumber {
+                coord: (
+                    54,
+                    112,
+                ),
+                number: 344,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            115,
+            135,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    114,
+                    138,
+                ),
+                number: 65,
+            },
+            PartNumber {
+                coord: (
+                    116,
+                    138,
+                ),
+                number: 233,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            96,
+            54,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    95,
+                    57,
+                ),
+                number: 209,
+            },
+            PartNumber {
+                coord: (
+                    97,
+                    54,
+                ),
+                number: 848,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            85,
+            49,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    86,
+                    50,
+                ),
+                number: 688,
+            },
+            PartNumber {
+                coord: (
+                    84,
+                    53,
+                ),
+                number: 321,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            138,
+            135,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    137,
+                    138,
+                ),
+                number: 156,
+            },
+            PartNumber {
+                coord: (
+                    139,
+                    138,
+                ),
+                number: 617,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            93,
+            49,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    92,
+                    49,
+                ),
+                number: 145,
+            },
+            PartNumber {
+                coord: (
+                    92,
+                    52,
+                ),
+                number: 15,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            30,
+            119,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    31,
+                    119,
+                ),
+                number: 326,
+            },
+            PartNumber {
+                coord: (
+                    30,
+                    123,
+                ),
+                number: 690,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            14,
+            95,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    13,
+                    95,
+                ),
+                number: 926,
+            },
+            PartNumber {
+                coord: (
+                    14,
+                    98,
+                ),
+                number: 17,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            112,
+            40,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    113,
+                    43,
+                ),
+                number: 50,
+            },
+            PartNumber {
+                coord: (
+                    111,
+                    43,
+                ),
+                number: 59,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            35,
+            37,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    34,
+                    39,
+                ),
+                number: 202,
+            },
+            PartNumber {
+                coord: (
+                    36,
+                    38,
+                ),
+                number: 788,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            36,
+            73,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    35,
+                    77,
+                ),
+                number: 588,
+            },
+            PartNumber {
+                coord: (
+                    37,
+                    75,
+                ),
+                number: 987,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            11,
+            127,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    12,
+                    130,
+                ),
+                number: 369,
+            },
+            PartNumber {
+                coord: (
+                    10,
+                    130,
+                ),
+                number: 599,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            60,
+            30,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    59,
+                    34,
+                ),
+                number: 813,
+            },
+            PartNumber {
+                coord: (
+                    61,
+                    33,
+                ),
+                number: 236,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            60,
+            19,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    59,
+                    22,
+                ),
+                number: 120,
+            },
+            PartNumber {
+                coord: (
+                    61,
+                    20,
+                ),
+                number: 51,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            78,
+            32,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    77,
+                    34,
+                ),
+                number: 786,
+            },
+            PartNumber {
+                coord: (
+                    79,
+                    34,
+                ),
+                number: 822,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            27,
+            64,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    27,
+                    68,
+                ),
+                number: 449,
+            },
+            PartNumber {
+                coord: (
+                    26,
+                    64,
+                ),
+                number: 837,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            131,
+            54,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    130,
+                    57,
+                ),
+                number: 106,
+            },
+            PartNumber {
+                coord: (
+                    132,
+                    56,
+                ),
+                number: 133,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            27,
+            52,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    28,
+                    54,
+                ),
+                number: 883,
+            },
+            PartNumber {
+                coord: (
+                    26,
+                    56,
+                ),
+                number: 563,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            26,
+            11,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    27,
+                    12,
+                ),
+                number: 689,
+            },
+            PartNumber {
+                coord: (
+                    25,
+                    13,
+                ),
+                number: 593,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            67,
+            128,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    68,
+                    130,
+                ),
+                number: 78,
+            },
+            PartNumber {
+                coord: (
+                    66,
+                    130,
+                ),
+                number: 938,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            137,
+            23,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    136,
+                    26,
+                ),
+                number: 570,
+            },
+            PartNumber {
+                coord: (
+                    138,
+                    24,
+                ),
+                number: 405,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            30,
+            110,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    30,
+                    110,
+                ),
+                number: 835,
+            },
+            PartNumber {
+                coord: (
+                    31,
+                    114,
+                ),
+                number: 141,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            85,
+            67,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    84,
+                    67,
+                ),
+                number: 217,
+            },
+            PartNumber {
+                coord: (
+                    86,
+                    70,
+                ),
+                number: 82,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            99,
+            57,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    98,
+                    60,
+                ),
+                number: 817,
+            },
+            PartNumber {
+                coord: (
+                    100,
+                    57,
+                ),
+                number: 100,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            57,
+            45,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    57,
+                    45,
+                ),
+                number: 161,
+            },
+            PartNumber {
+                coord: (
+                    58,
+                    49,
+                ),
+                number: 546,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            84,
+            31,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    83,
+                    34,
+                ),
+                number: 558,
+            },
+            PartNumber {
+                coord: (
+                    85,
+                    31,
+                ),
+                number: 80,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            84,
+            13,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    84,
+                    13,
+                ),
+                number: 552,
+            },
+            PartNumber {
+                coord: (
+                    83,
+                    17,
+                ),
+                number: 407,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            26,
+            80,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    27,
+                    80,
+                ),
+                number: 39,
+            },
+            PartNumber {
+                coord: (
+                    25,
+                    81,
+                ),
+                number: 456,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            35,
+            43,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    34,
+                    43,
+                ),
+                number: 971,
+            },
+            PartNumber {
+                coord: (
+                    35,
+                    47,
+                ),
+                number: 557,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            95,
+            16,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    94,
+                    16,
+                ),
+                number: 659,
+            },
+            PartNumber {
+                coord: (
+                    96,
+                    16,
+                ),
+                number: 668,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            106,
+            61,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    107,
+                    64,
+                ),
+                number: 506,
+            },
+            PartNumber {
+                coord: (
+                    105,
+                    62,
+                ),
+                number: 77,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            119,
+            42,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    120,
+                    44,
+                ),
+                number: 815,
+            },
+            PartNumber {
+                coord: (
+                    118,
+                    46,
+                ),
+                number: 572,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            105,
+            19,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    106,
+                    23,
+                ),
+                number: 898,
+            },
+            PartNumber {
+                coord: (
+                    104,
+                    22,
+                ),
+                number: 133,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            88,
+            18,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    89,
+                    20,
+                ),
+                number: 466,
+            },
+            PartNumber {
+                coord: (
+                    87,
+                    19,
+                ),
+                number: 964,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            121,
+            49,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    122,
+                    49,
+                ),
+                number: 260,
+            },
+            PartNumber {
+                coord: (
+                    121,
+                    53,
+                ),
+                number: 888,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            111,
+            84,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    110,
+                    86,
+                ),
+                number: 231,
+            },
+            PartNumber {
+                coord: (
+                    112,
+                    84,
+                ),
+                number: 98,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            90,
+            49,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    89,
+                    53,
+                ),
+                number: 184,
+            },
+            PartNumber {
+                coord: (
+                    90,
+                    49,
+                ),
+                number: 499,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            36,
+            19,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    37,
+                    20,
+                ),
+                number: 521,
+            },
+            PartNumber {
+                coord: (
+                    35,
+                    19,
+                ),
+                number: 211,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            130,
+            130,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    130,
+                    130,
+                ),
+                number: 420,
+            },
+            PartNumber {
+                coord: (
+                    129,
+                    134,
+                ),
+                number: 509,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            104,
+            125,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    105,
+                    128,
+                ),
+                number: 671,
+            },
+            PartNumber {
+                coord: (
+                    103,
+                    125,
+                ),
+                number: 803,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            66,
+            16,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    65,
+                    17,
+                ),
+                number: 337,
+            },
+            PartNumber {
+                coord: (
+                    67,
+                    18,
+                ),
+                number: 378,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            30,
+            105,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    29,
+                    105,
+                ),
+                number: 72,
+            },
+            PartNumber {
+                coord: (
+                    31,
+                    106,
+                ),
+                number: 359,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            137,
+            75,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    138,
+                    79,
+                ),
+                number: 515,
+            },
+            PartNumber {
+                coord: (
+                    136,
+                    78,
+                ),
+                number: 582,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            31,
+            55,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    32,
+                    58,
+                ),
+                number: 539,
+            },
+            PartNumber {
+                coord: (
+                    30,
+                    55,
+                ),
+                number: 613,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            45,
+            91,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    44,
+                    94,
+                ),
+                number: 539,
+            },
+            PartNumber {
+                coord: (
+                    46,
+                    91,
+                ),
+                number: 619,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            5,
+            29,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    5,
+                    29,
+                ),
+                number: 951,
+            },
+            PartNumber {
+                coord: (
+                    6,
+                    33,
+                ),
+                number: 346,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            76,
+            110,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    75,
+                    113,
+                ),
+                number: 900,
+            },
+            PartNumber {
+                coord: (
+                    77,
+                    113,
+                ),
+                number: 277,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            34,
+            90,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    35,
+                    93,
+                ),
+                number: 367,
+            },
+            PartNumber {
+                coord: (
+                    33,
+                    91,
+                ),
+                number: 999,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            114,
+            130,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    113,
+                    130,
+                ),
+                number: 227,
+            },
+            PartNumber {
+                coord: (
+                    115,
+                    131,
+                ),
+                number: 385,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            96,
+            123,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    95,
+                    125,
+                ),
+                number: 504,
+            },
+            PartNumber {
+                coord: (
+                    97,
+                    126,
+                ),
+                number: 951,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            28,
+            112,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    27,
+                    115,
+                ),
+                number: 404,
+            },
+            PartNumber {
+                coord: (
+                    29,
+                    115,
+                ),
+                number: 424,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            43,
+            86,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    43,
+                    90,
+                ),
+                number: 962,
+            },
+            PartNumber {
+                coord: (
+                    44,
+                    86,
+                ),
+                number: 205,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            44,
+            133,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    45,
+                    134,
+                ),
+                number: 636,
+            },
+            PartNumber {
+                coord: (
+                    43,
+                    134,
+                ),
+                number: 42,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            126,
+            22,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    125,
+                    25,
+                ),
+                number: 889,
+            },
+            PartNumber {
+                coord: (
+                    127,
+                    26,
+                ),
+                number: 583,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            134,
+            79,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    135,
+                    83,
+                ),
+                number: 522,
+            },
+            PartNumber {
+                coord: (
+                    133,
+                    80,
+                ),
+                number: 95,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            134,
+            135,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    135,
+                    139,
+                ),
+                number: 678,
+            },
+            PartNumber {
+                coord: (
+                    135,
+                    135,
+                ),
+                number: 365,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            5,
+            24,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    4,
+                    24,
+                ),
+                number: 964,
+            },
+            PartNumber {
+                coord: (
+                    6,
+                    24,
+                ),
+                number: 690,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            72,
+            72,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    71,
+                    72,
+                ),
+                number: 769,
+            },
+            PartNumber {
+                coord: (
+                    73,
+                    73,
+                ),
+                number: 816,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            127,
+            46,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    128,
+                    46,
+                ),
+                number: 140,
+            },
+            PartNumber {
+                coord: (
+                    127,
+                    50,
+                ),
+                number: 393,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            67,
+            21,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    68,
+                    22,
+                ),
+                number: 886,
+            },
+            PartNumber {
+                coord: (
+                    66,
+                    24,
+                ),
+                number: 565,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            39,
+            50,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    39,
+                    54,
+                ),
+                number: 540,
+            },
+            PartNumber {
+                coord: (
+                    40,
+                    50,
+                ),
+                number: 871,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            1,
+            134,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    2,
+                    135,
+                ),
+                number: 789,
+            },
+            PartNumber {
+                coord: (
+                    0,
+                    135,
+                ),
+                number: 528,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            88,
+            33,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    88,
+                    33,
+                ),
+                number: 891,
+            },
+            PartNumber {
+                coord: (
+                    87,
+                    37,
+                ),
+                number: 795,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            100,
+            120,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    99,
+                    124,
+                ),
+                number: 577,
+            },
+            PartNumber {
+                coord: (
+                    99,
+                    120,
+                ),
+                number: 669,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            117,
+            58,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    116,
+                    59,
+                ),
+                number: 757,
+            },
+            PartNumber {
+                coord: (
+                    118,
+                    58,
+                ),
+                number: 22,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            44,
+            41,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    45,
+                    43,
+                ),
+                number: 925,
+            },
+            PartNumber {
+                coord: (
+                    43,
+                    41,
+                ),
+                number: 833,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            63,
+            34,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    64,
+                    37,
+                ),
+                number: 594,
+            },
+            PartNumber {
+                coord: (
+                    62,
+                    38,
+                ),
+                number: 316,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            5,
+            37,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    5,
+                    37,
+                ),
+                number: 984,
+            },
+            PartNumber {
+                coord: (
+                    5,
+                    41,
+                ),
+                number: 111,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            82,
+            11,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    81,
+                    11,
+                ),
+                number: 329,
+            },
+            PartNumber {
+                coord: (
+                    81,
+                    15,
+                ),
+                number: 623,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            65,
+            69,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    66,
+                    69,
+                ),
+                number: 307,
+            },
+            PartNumber {
+                coord: (
+                    64,
+                    71,
+                ),
+                number: 220,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            56,
+            103,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    57,
+                    103,
+                ),
+                number: 564,
+            },
+            PartNumber {
+                coord: (
+                    55,
+                    105,
+                ),
+                number: 399,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            37,
+            78,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    38,
+                    79,
+                ),
+                number: 25,
+            },
+            PartNumber {
+                coord: (
+                    36,
+                    81,
+                ),
+                number: 532,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            103,
+            111,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    102,
+                    115,
+                ),
+                number: 573,
+            },
+            PartNumber {
+                coord: (
+                    102,
+                    111,
+                ),
+                number: 876,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            52,
+            102,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    53,
+                    102,
+                ),
+                number: 156,
+            },
+            PartNumber {
+                coord: (
+                    52,
+                    105,
+                ),
+                number: 78,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            101,
+            15,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    102,
+                    17,
+                ),
+                number: 954,
+            },
+            PartNumber {
+                coord: (
+                    100,
+                    15,
+                ),
+                number: 307,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            17,
+            64,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    16,
+                    68,
+                ),
+                number: 589,
+            },
+            PartNumber {
+                coord: (
+                    18,
+                    66,
+                ),
+                number: 509,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            91,
+            70,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    90,
+                    71,
+                ),
+                number: 586,
+            },
+            PartNumber {
+                coord: (
+                    92,
+                    71,
+                ),
+                number: 581,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            136,
+            125,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    137,
+                    128,
+                ),
+                number: 694,
+            },
+            PartNumber {
+                coord: (
+                    135,
+                    128,
+                ),
+                number: 353,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            65,
+            3,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    66,
+                    4,
+                ),
+                number: 993,
+            },
+            PartNumber {
+                coord: (
+                    64,
+                    3,
+                ),
+                number: 500,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            118,
+            35,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    119,
+                    39,
+                ),
+                number: 510,
+            },
+            PartNumber {
+                coord: (
+                    118,
+                    35,
+                ),
+                number: 877,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            40,
+            102,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    39,
+                    102,
+                ),
+                number: 514,
+            },
+            PartNumber {
+                coord: (
+                    41,
+                    104,
+                ),
+                number: 278,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            110,
+            30,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    109,
+                    32,
+                ),
+                number: 82,
+            },
+            PartNumber {
+                coord: (
+                    111,
+                    34,
+                ),
+                number: 844,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            44,
+            47,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    43,
+                    51,
+                ),
+                number: 137,
+            },
+            PartNumber {
+                coord: (
+                    45,
+                    50,
+                ),
+                number: 399,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            64,
+            51,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    65,
+                    55,
+                ),
+                number: 827,
+            },
+            PartNumber {
+                coord: (
+                    63,
+                    54,
+                ),
+                number: 559,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            61,
+            58,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    60,
+                    62,
+                ),
+                number: 846,
+            },
+            PartNumber {
+                coord: (
+                    62,
+                    58,
+                ),
+                number: 590,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            7,
+            91,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    8,
+                    93,
+                ),
+                number: 169,
+            },
+            PartNumber {
+                coord: (
+                    6,
+                    91,
+                ),
+                number: 192,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            97,
+            92,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    98,
+                    92,
+                ),
+                number: 431,
+            },
+            PartNumber {
+                coord: (
+                    97,
+                    96,
+                ),
+                number: 671,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            30,
+            98,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    29,
+                    102,
+                ),
+                number: 531,
+            },
+            PartNumber {
+                coord: (
+                    30,
+                    98,
+                ),
+                number: 91,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            82,
+            105,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    81,
+                    108,
+                ),
+                number: 11,
+            },
+            PartNumber {
+                coord: (
+                    82,
+                    105,
+                ),
+                number: 202,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            122,
+            109,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    123,
+                    109,
+                ),
+                number: 312,
+            },
+            PartNumber {
+                coord: (
+                    121,
+                    112,
+                ),
+                number: 797,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            82,
+            91,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    83,
+                    95,
+                ),
+                number: 801,
+            },
+            PartNumber {
+                coord: (
+                    81,
+                    95,
+                ),
+                number: 792,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            126,
+            122,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    125,
+                    125,
+                ),
+                number: 127,
+            },
+            PartNumber {
+                coord: (
+                    127,
+                    123,
+                ),
+                number: 681,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            116,
+            67,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    116,
+                    71,
+                ),
+                number: 577,
+            },
+            PartNumber {
+                coord: (
+                    115,
+                    67,
+                ),
+                number: 123,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            58,
+            89,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    57,
+                    91,
+                ),
+                number: 726,
+            },
+            PartNumber {
+                coord: (
+                    59,
+                    92,
+                ),
+                number: 815,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            30,
+            126,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    31,
+                    129,
+                ),
+                number: 658,
+            },
+            PartNumber {
+                coord: (
+                    29,
+                    130,
+                ),
+                number: 766,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            112,
+            132,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    113,
+                    135,
+                ),
+                number: 426,
+            },
+            PartNumber {
+                coord: (
+                    111,
+                    132,
+                ),
+                number: 167,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            73,
+            107,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    74,
+                    109,
+                ),
+                number: 585,
+            },
+            PartNumber {
+                coord: (
+                    72,
+                    108,
+                ),
+                number: 2,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            65,
+            113,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    66,
+                    113,
+                ),
+                number: 105,
+            },
+            PartNumber {
+                coord: (
+                    64,
+                    114,
+                ),
+                number: 89,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            64,
+            85,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    64,
+                    85,
+                ),
+                number: 830,
+            },
+            PartNumber {
+                coord: (
+                    65,
+                    89,
+                ),
+                number: 828,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            41,
+            65,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    42,
+                    66,
+                ),
+                number: 519,
+            },
+            PartNumber {
+                coord: (
+                    40,
+                    66,
+                ),
+                number: 295,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            18,
+            17,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    18,
+                    17,
+                ),
+                number: 707,
+            },
+            PartNumber {
+                coord: (
+                    18,
+                    21,
+                ),
+                number: 370,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            136,
+            106,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    137,
+                    110,
+                ),
+                number: 365,
+            },
+            PartNumber {
+                coord: (
+                    137,
+                    106,
+                ),
+                number: 92,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            111,
+            21,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    110,
+                    24,
+                ),
+                number: 758,
+            },
+            PartNumber {
+                coord: (
+                    112,
+                    22,
+                ),
+                number: 573,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            18,
+            94,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    19,
+                    95,
+                ),
+                number: 955,
+            },
+            PartNumber {
+                coord: (
+                    17,
+                    94,
+                ),
+                number: 344,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            83,
+            135,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    84,
+                    138,
+                ),
+                number: 288,
+            },
+            PartNumber {
+                coord: (
+                    82,
+                    138,
+                ),
+                number: 444,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            60,
+            135,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    59,
+                    136,
+                ),
+                number: 188,
+            },
+            PartNumber {
+                coord: (
+                    61,
+                    139,
+                ),
+                number: 816,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            110,
+            100,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    109,
+                    101,
+                ),
+                number: 447,
+            },
+            PartNumber {
+                coord: (
+                    111,
+                    101,
+                ),
+                number: 374,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            1,
+            64,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    1,
+                    64,
+                ),
+                number: 111,
+            },
+            PartNumber {
+                coord: (
+                    0,
+                    68,
+                ),
+                number: 264,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            89,
+            22,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    88,
+                    25,
+                ),
+                number: 201,
+            },
+            PartNumber {
+                coord: (
+                    90,
+                    26,
+                ),
+                number: 624,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            83,
+            126,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    82,
+                    126,
+                ),
+                number: 47,
+            },
+            PartNumber {
+                coord: (
+                    82,
+                    130,
+                ),
+                number: 704,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            117,
+            30,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    116,
+                    33,
+                ),
+                number: 442,
+            },
+            PartNumber {
+                coord: (
+                    118,
+                    30,
+                ),
+                number: 89,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            108,
+            45,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    109,
+                    45,
+                ),
+                number: 729,
+            },
+            PartNumber {
+                coord: (
+                    107,
+                    47,
+                ),
+                number: 407,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            120,
+            30,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    120,
+                    30,
+                ),
+                number: 705,
+            },
+            PartNumber {
+                coord: (
+                    120,
+                    34,
+                ),
+                number: 590,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            83,
+            121,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    84,
+                    121,
+                ),
+                number: 303,
+            },
+            PartNumber {
+                coord: (
+                    82,
+                    123,
+                ),
+                number: 971,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            77,
+            57,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    78,
+                    60,
+                ),
+                number: 471,
+            },
+            PartNumber {
+                coord: (
+                    76,
+                    61,
+                ),
+                number: 155,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            106,
+            75,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    107,
+                    78,
+                ),
+                number: 332,
+            },
+            PartNumber {
+                coord: (
+                    105,
+                    76,
+                ),
+                number: 622,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            39,
+            55,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    38,
+                    58,
+                ),
+                number: 776,
+            },
+            PartNumber {
+                coord: (
+                    40,
+                    58,
+                ),
+                number: 384,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            95,
+            99,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    95,
+                    103,
+                ),
+                number: 652,
+            },
+            PartNumber {
+                coord: (
+                    94,
+                    99,
+                ),
+                number: 878,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            112,
+            6,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    111,
+                    10,
+                ),
+                number: 587,
+            },
+            PartNumber {
+                coord: (
+                    112,
+                    6,
+                ),
+                number: 691,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            47,
+            55,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    48,
+                    55,
+                ),
+                number: 530,
+            },
+            PartNumber {
+                coord: (
+                    46,
+                    55,
+                ),
+                number: 137,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            93,
+            130,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    92,
+                    132,
+                ),
+                number: 175,
+            },
+            PartNumber {
+                coord: (
+                    94,
+                    131,
+                ),
+                number: 611,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            41,
+            39,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    40,
+                    43,
+                ),
+                number: 809,
+            },
+            PartNumber {
+                coord: (
+                    41,
+                    39,
+                ),
+                number: 144,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            98,
+            29,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    98,
+                    33,
+                ),
+                number: 821,
+            },
+            PartNumber {
+                coord: (
+                    99,
+                    29,
+                ),
+                number: 59,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            98,
+            114,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    97,
+                    117,
+                ),
+                number: 900,
+            },
+            PartNumber {
+                coord: (
+                    99,
+                    114,
+                ),
+                number: 975,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            27,
+            89,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    28,
+                    90,
+                ),
+                number: 891,
+            },
+            PartNumber {
+                coord: (
+                    26,
+                    89,
+                ),
+                number: 230,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            34,
+            23,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    35,
+                    25,
+                ),
+                number: 426,
+            },
+            PartNumber {
+                coord: (
+                    33,
+                    24,
+                ),
+                number: 798,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            13,
+            114,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    14,
+                    114,
+                ),
+                number: 657,
+            },
+            PartNumber {
+                coord: (
+                    12,
+                    114,
+                ),
+                number: 603,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            55,
+            56,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    54,
+                    56,
+                ),
+                number: 447,
+            },
+            PartNumber {
+                coord: (
+                    56,
+                    59,
+                ),
+                number: 964,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            138,
+            66,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    139,
+                    69,
+                ),
+                number: 262,
+            },
+            PartNumber {
+                coord: (
+                    137,
+                    66,
+                ),
+                number: 623,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            32,
+            132,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    33,
+                    136,
+                ),
+                number: 364,
+            },
+            PartNumber {
+                coord: (
+                    31,
+                    134,
+                ),
+                number: 832,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            23,
+            39,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    24,
+                    43,
+                ),
+                number: 370,
+            },
+            PartNumber {
+                coord: (
+                    22,
+                    42,
+                ),
+                number: 406,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            68,
+            33,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    69,
+                    36,
+                ),
+                number: 110,
+            },
+            PartNumber {
+                coord: (
+                    67,
+                    36,
+                ),
+                number: 283,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            3,
+            103,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    4,
+                    103,
+                ),
+                number: 505,
+            },
+            PartNumber {
+                coord: (
+                    2,
+                    107,
+                ),
+                number: 642,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            120,
+            136,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    119,
+                    139,
+                ),
+                number: 858,
+            },
+            PartNumber {
+                coord: (
+                    121,
+                    138,
+                ),
+                number: 95,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            95,
+            44,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    94,
+                    48,
+                ),
+                number: 808,
+            },
+            PartNumber {
+                coord: (
+                    96,
+                    46,
+                ),
+                number: 587,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            50,
+            69,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    51,
+                    72,
+                ),
+                number: 43,
+            },
+            PartNumber {
+                coord: (
+                    49,
+                    71,
+                ),
+                number: 840,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            37,
+            100,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    37,
+                    104,
+                ),
+                number: 810,
+            },
+            PartNumber {
+                coord: (
+                    36,
+                    100,
+                ),
+                number: 85,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            89,
+            83,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    88,
+                    83,
+                ),
+                number: 483,
+            },
+            PartNumber {
+                coord: (
+                    88,
+                    87,
+                ),
+                number: 399,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            33,
+            10,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    34,
+                    14,
+                ),
+                number: 919,
+            },
+            PartNumber {
+                coord: (
+                    32,
+                    13,
+                ),
+                number: 772,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            92,
+            27,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    91,
+                    31,
+                ),
+                number: 855,
+            },
+            PartNumber {
+                coord: (
+                    92,
+                    27,
+                ),
+                number: 528,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            40,
+            15,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    40,
+                    15,
+                ),
+                number: 52,
+            },
+            PartNumber {
+                coord: (
+                    39,
+                    18,
+                ),
+                number: 43,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            31,
+            41,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    32,
+                    44,
+                ),
+                number: 335,
+            },
+            PartNumber {
+                coord: (
+                    30,
+                    44,
+                ),
+                number: 780,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            62,
+            75,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    63,
+                    75,
+                ),
+                number: 116,
+            },
+            PartNumber {
+                coord: (
+                    61,
+                    78,
+                ),
+                number: 338,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            9,
+            79,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    8,
+                    79,
+                ),
+                number: 733,
+            },
+            PartNumber {
+                coord: (
+                    10,
+                    81,
+                ),
+                number: 399,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            91,
+            87,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    90,
+                    91,
+                ),
+                number: 950,
+            },
+            PartNumber {
+                coord: (
+                    92,
+                    87,
+                ),
+                number: 35,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            103,
+            3,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    104,
+                    3,
+                ),
+                number: 94,
+            },
+            PartNumber {
+                coord: (
+                    102,
+                    4,
+                ),
+                number: 923,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            8,
+            73,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    9,
+                    73,
+                ),
+                number: 776,
+            },
+            PartNumber {
+                coord: (
+                    7,
+                    75,
+                ),
+                number: 535,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            125,
+            19,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    126,
+                    19,
+                ),
+                number: 253,
+            },
+            PartNumber {
+                coord: (
+                    124,
+                    21,
+                ),
+                number: 633,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            95,
+            111,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    96,
+                    113,
+                ),
+                number: 919,
+            },
+            PartNumber {
+                coord: (
+                    94,
+                    111,
+                ),
+                number: 44,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            107,
+            31,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    107,
+                    35,
+                ),
+                number: 985,
+            },
+            PartNumber {
+                coord: (
+                    106,
+                    31,
+                ),
+                number: 640,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            20,
+            105,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    19,
+                    108,
+                ),
+                number: 150,
+            },
+            PartNumber {
+                coord: (
+                    21,
+                    109,
+                ),
+                number: 462,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            59,
+            108,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    58,
+                    108,
+                ),
+                number: 591,
+            },
+            PartNumber {
+                coord: (
+                    60,
+                    108,
+                ),
+                number: 637,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            12,
+            71,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    11,
+                    74,
+                ),
+                number: 800,
+            },
+            PartNumber {
+                coord: (
+                    13,
+                    74,
+                ),
+                number: 321,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            20,
+            134,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    21,
+                    137,
+                ),
+                number: 42,
+            },
+            PartNumber {
+                coord: (
+                    19,
+                    138,
+                ),
+                number: 555,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            4,
+            9,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    3,
+                    10,
+                ),
+                number: 58,
+            },
+            PartNumber {
+                coord: (
+                    5,
+                    9,
+                ),
+                number: 832,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            109,
+            39,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    108,
+                    40,
+                ),
+                number: 142,
+            },
+            PartNumber {
+                coord: (
+                    110,
+                    39,
+                ),
+                number: 225,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            7,
+            99,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    6,
+                    100,
+                ),
+                number: 87,
+            },
+            PartNumber {
+                coord: (
+                    8,
+                    99,
+                ),
+                number: 146,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            138,
+            27,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    139,
+                    28,
+                ),
+                number: 362,
+            },
+            PartNumber {
+                coord: (
+                    137,
+                    30,
+                ),
+                number: 506,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            107,
+            9,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    106,
+                    9,
+                ),
+                number: 252,
+            },
+            PartNumber {
+                coord: (
+                    108,
+                    13,
+                ),
+                number: 548,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            44,
+            62,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    45,
+                    66,
+                ),
+                number: 560,
+            },
+            PartNumber {
+                coord: (
+                    44,
+                    62,
+                ),
+                number: 26,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            134,
+            101,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    133,
+                    104,
+                ),
+                number: 985,
+            },
+            PartNumber {
+                coord: (
+                    135,
+                    105,
+                ),
+                number: 592,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            18,
+            111,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    19,
+                    115,
+                ),
+                number: 958,
+            },
+            PartNumber {
+                coord: (
+                    17,
+                    114,
+                ),
+                number: 694,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            112,
+            120,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    111,
+                    120,
+                ),
+                number: 186,
+            },
+            PartNumber {
+                coord: (
+                    113,
+                    123,
+                ),
+                number: 175,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            79,
+            16,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    80,
+                    20,
+                ),
+                number: 956,
+            },
+            PartNumber {
+                coord: (
+                    78,
+                    16,
+                ),
+                number: 796,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            75,
+            4,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    76,
+                    5,
+                ),
+                number: 19,
+            },
+            PartNumber {
+                coord: (
+                    74,
+                    6,
+                ),
+                number: 14,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            24,
+            108,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    25,
+                    109,
+                ),
+                number: 303,
+            },
+            PartNumber {
+                coord: (
+                    23,
+                    110,
+                ),
+                number: 87,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            65,
+            134,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    66,
+                    134,
+                ),
+                number: 166,
+            },
+            PartNumber {
+                coord: (
+                    64,
+                    134,
+                ),
+                number: 363,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            42,
+            118,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    43,
+                    119,
+                ),
+                number: 421,
+            },
+            PartNumber {
+                coord: (
+                    41,
+                    120,
+                ),
+                number: 859,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            128,
+            95,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    129,
+                    98,
+                ),
+                number: 65,
+            },
+            PartNumber {
+                coord: (
+                    128,
+                    95,
+                ),
+                number: 823,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            133,
+            21,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    133,
+                    21,
+                ),
+                number: 139,
+            },
+            PartNumber {
+                coord: (
+                    133,
+                    25,
+                ),
+                number: 134,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            42,
+            6,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    43,
+                    9,
+                ),
+                number: 42,
+            },
+            PartNumber {
+                coord: (
+                    41,
+                    6,
+                ),
+                number: 147,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            62,
+            89,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    63,
+                    91,
+                ),
+                number: 926,
+            },
+            PartNumber {
+                coord: (
+                    61,
+                    92,
+                ),
+                number: 258,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            45,
+            97,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    46,
+                    97,
+                ),
+                number: 283,
+            },
+            PartNumber {
+                coord: (
+                    44,
+                    98,
+                ),
+                number: 109,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            73,
+            88,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    72,
+                    92,
+                ),
+                number: 841,
+            },
+            PartNumber {
+                coord: (
+                    74,
+                    91,
+                ),
+                number: 712,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            136,
+            85,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    137,
+                    87,
+                ),
+                number: 914,
+            },
+            PartNumber {
+                coord: (
+                    135,
+                    89,
+                ),
+                number: 915,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            35,
+            57,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    34,
+                    61,
+                ),
+                number: 488,
+            },
+            PartNumber {
+                coord: (
+                    36,
+                    58,
+                ),
+                number: 788,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            112,
+            108,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    112,
+                    108,
+                ),
+                number: 432,
+            },
+            PartNumber {
+                coord: (
+                    112,
+                    112,
+                ),
+                number: 737,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            3,
+            53,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    4,
+                    57,
+                ),
+                number: 302,
+            },
+            PartNumber {
+                coord: (
+                    4,
+                    53,
+                ),
+                number: 474,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            99,
+            134,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    100,
+                    134,
+                ),
+                number: 387,
+            },
+            PartNumber {
+                coord: (
+                    98,
+                    136,
+                ),
+                number: 691,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            108,
+            24,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    108,
+                    24,
+                ),
+                number: 608,
+            },
+            PartNumber {
+                coord: (
+                    108,
+                    28,
+                ),
+                number: 471,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            7,
+            49,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    7,
+                    49,
+                ),
+                number: 816,
+            },
+            PartNumber {
+                coord: (
+                    7,
+                    53,
+                ),
+                number: 588,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            31,
+            84,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    30,
+                    86,
+                ),
+                number: 96,
+            },
+            PartNumber {
+                coord: (
+                    32,
+                    86,
+                ),
+                number: 959,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            3,
+            80,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    4,
+                    81,
+                ),
+                number: 786,
+            },
+            PartNumber {
+                coord: (
+                    2,
+                    81,
+                ),
+                number: 618,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            100,
+            86,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    101,
+                    88,
+                ),
+                number: 192,
+            },
+            PartNumber {
+                coord: (
+                    99,
+                    86,
+                ),
+                number: 746,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            86,
+            127,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    85,
+                    129,
+                ),
+                number: 235,
+            },
+            PartNumber {
+                coord: (
+                    87,
+                    131,
+                ),
+                number: 210,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            7,
+            4,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    8,
+                    4,
+                ),
+                number: 36,
+            },
+            PartNumber {
+                coord: (
+                    8,
+                    8,
+                ),
+                number: 290,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            11,
+            22,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    10,
+                    22,
+                ),
+                number: 78,
+            },
+            PartNumber {
+                coord: (
+                    12,
+                    26,
+                ),
+                number: 462,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            116,
+            52,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    115,
+                    53,
+                ),
+                number: 277,
+            },
+            PartNumber {
+                coord: (
+                    117,
+                    55,
+                ),
+                number: 23,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            130,
+            80,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    129,
+                    82,
+                ),
+                number: 769,
+            },
+            PartNumber {
+                coord: (
+                    131,
+                    81,
+                ),
+                number: 488,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            85,
+            85,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    85,
+                    85,
+                ),
+                number: 806,
+            },
+            PartNumber {
+                coord: (
+                    86,
+                    89,
+                ),
+                number: 316,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            60,
+            7,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    61,
+                    7,
+                ),
+                number: 81,
+            },
+            PartNumber {
+                coord: (
+                    59,
+                    8,
+                ),
+                number: 806,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            54,
+            128,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    55,
+                    131,
+                ),
+                number: 491,
+            },
+            PartNumber {
+                coord: (
+                    53,
+                    130,
+                ),
+                number: 605,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            111,
+            61,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    110,
+                    61,
+                ),
+                number: 374,
+            },
+            PartNumber {
+                coord: (
+                    112,
+                    61,
+                ),
+                number: 940,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            20,
+            23,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    21,
+                    24,
+                ),
+                number: 987,
+            },
+            PartNumber {
+                coord: (
+                    19,
+                    27,
+                ),
+                number: 973,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            123,
+            28,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    124,
+                    29,
+                ),
+                number: 581,
+            },
+            PartNumber {
+                coord: (
+                    122,
+                    29,
+                ),
+                number: 765,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            98,
+            73,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    99,
+                    74,
+                ),
+                number: 548,
+            },
+            PartNumber {
+                coord: (
+                    97,
+                    75,
+                ),
+                number: 639,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            15,
+            44,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    15,
+                    44,
+                ),
+                number: 465,
+            },
+            PartNumber {
+                coord: (
+                    14,
+                    48,
+                ),
+                number: 479,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            52,
+            50,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    51,
+                    50,
+                ),
+                number: 809,
+            },
+            PartNumber {
+                coord: (
+                    51,
+                    54,
+                ),
+                number: 925,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            40,
+            30,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    39,
+                    33,
+                ),
+                number: 412,
+            },
+            PartNumber {
+                coord: (
+                    41,
+                    34,
+                ),
+                number: 914,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            43,
+            99,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    42,
+                    100,
+                ),
+                number: 361,
+            },
+            PartNumber {
+                coord: (
+                    44,
+                    102,
+                ),
+                number: 348,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            73,
+            79,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    74,
+                    80,
+                ),
+                number: 192,
+            },
+            PartNumber {
+                coord: (
+                    72,
+                    79,
+                ),
+                number: 597,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            138,
+            13,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    137,
+                    13,
+                ),
+                number: 38,
+            },
+            PartNumber {
+                coord: (
+                    139,
+                    15,
+                ),
+                number: 608,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            14,
+            69,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    15,
+                    73,
+                ),
+                number: 676,
+            },
+            PartNumber {
+                coord: (
+                    13,
+                    70,
+                ),
+                number: 966,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            127,
+            30,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    128,
+                    34,
+                ),
+                number: 376,
+            },
+            PartNumber {
+                coord: (
+                    127,
+                    30,
+                ),
+                number: 512,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            14,
+            130,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    15,
+                    134,
+                ),
+                number: 662,
+            },
+            PartNumber {
+                coord: (
+                    15,
+                    130,
+                ),
+                number: 399,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            60,
+            48,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    60,
+                    52,
+                ),
+                number: 919,
+            },
+            PartNumber {
+                coord: (
+                    60,
+                    48,
+                ),
+                number: 52,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            127,
+            127,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    128,
+                    127,
+                ),
+                number: 224,
+            },
+            PartNumber {
+                coord: (
+                    127,
+                    131,
+                ),
+                number: 713,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            20,
+            120,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    20,
+                    120,
+                ),
+                number: 306,
+            },
+            PartNumber {
+                coord: (
+                    21,
+                    124,
+                ),
+                number: 374,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            47,
+            105,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    47,
+                    109,
+                ),
+                number: 141,
+            },
+            PartNumber {
+                coord: (
+                    48,
+                    105,
+                ),
+                number: 542,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            78,
+            133,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    79,
+                    134,
+                ),
+                number: 606,
+            },
+            PartNumber {
+                coord: (
+                    77,
+                    136,
+                ),
+                number: 11,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            76,
+            83,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    77,
+                    87,
+                ),
+                number: 164,
+            },
+            PartNumber {
+                coord: (
+                    77,
+                    83,
+                ),
+                number: 631,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            118,
+            90,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    118,
+                    90,
+                ),
+                number: 354,
+            },
+            PartNumber {
+                coord: (
+                    118,
+                    94,
+                ),
+                number: 864,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            20,
+            31,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    20,
+                    31,
+                ),
+                number: 504,
+            },
+            PartNumber {
+                coord: (
+                    20,
+                    35,
+                ),
+                number: 352,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            24,
+            133,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    23,
+                    136,
+                ),
+                number: 505,
+            },
+            PartNumber {
+                coord: (
+                    25,
+                    136,
+                ),
+                number: 432,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            124,
+            136,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    123,
+                    138,
+                ),
+                number: 627,
+            },
+            PartNumber {
+                coord: (
+                    125,
+                    137,
+                ),
+                number: 921,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            123,
+            7,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    122,
+                    9,
+                ),
+                number: 890,
+            },
+            PartNumber {
+                coord: (
+                    124,
+                    7,
+                ),
+                number: 149,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            16,
+            61,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    15,
+                    64,
+                ),
+                number: 419,
+            },
+            PartNumber {
+                coord: (
+                    17,
+                    62,
+                ),
+                number: 895,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            112,
+            52,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    113,
+                    52,
+                ),
+                number: 324,
+            },
+            PartNumber {
+                coord: (
+                    111,
+                    52,
+                ),
+                number: 135,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            67,
+            81,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    66,
+                    84,
+                ),
+                number: 95,
+            },
+            PartNumber {
+                coord: (
+                    68,
+                    82,
+                ),
+                number: 742,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            6,
+            112,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    5,
+                    112,
+                ),
+                number: 198,
+            },
+            PartNumber {
+                coord: (
+                    7,
+                    114,
+                ),
+                number: 425,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            113,
+            68,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    112,
+                    68,
+                ),
+                number: 105,
+            },
+            PartNumber {
+                coord: (
+                    114,
+                    72,
+                ),
+                number: 184,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            115,
+            84,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    116,
+                    84,
+                ),
+                number: 862,
+            },
+            PartNumber {
+                coord: (
+                    114,
+                    87,
+                ),
+                number: 696,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            10,
+            113,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    9,
+                    113,
+                ),
+                number: 790,
+            },
+            PartNumber {
+                coord: (
+                    9,
+                    117,
+                ),
+                number: 871,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            57,
+            13,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    58,
+                    16,
+                ),
+                number: 155,
+            },
+            PartNumber {
+                coord: (
+                    56,
+                    17,
+                ),
+                number: 772,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            130,
+            63,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    129,
+                    63,
+                ),
+                number: 716,
+            },
+            PartNumber {
+                coord: (
+                    130,
+                    67,
+                ),
+                number: 199,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            51,
+            56,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    50,
+                    60,
+                ),
+                number: 573,
+            },
+            PartNumber {
+                coord: (
+                    52,
+                    60,
+                ),
+                number: 847,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            124,
+            114,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    124,
+                    114,
+                ),
+                number: 210,
+            },
+            PartNumber {
+                coord: (
+                    123,
+                    118,
+                ),
+                number: 881,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            36,
+            107,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    35,
+                    107,
+                ),
+                number: 961,
+            },
+            PartNumber {
+                coord: (
+                    37,
+                    108,
+                ),
+                number: 214,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            68,
+            74,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    67,
+                    78,
+                ),
+                number: 937,
+            },
+            PartNumber {
+                coord: (
+                    69,
+                    75,
+                ),
+                number: 838,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            59,
+            80,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    58,
+                    80,
+                ),
+                number: 968,
+            },
+            PartNumber {
+                coord: (
+                    60,
+                    83,
+                ),
+                number: 887,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            9,
+            37,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    8,
+                    38,
+                ),
+                number: 579,
+            },
+            PartNumber {
+                coord: (
+                    10,
+                    38,
+                ),
+                number: 716,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            100,
+            38,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    101,
+                    42,
+                ),
+                number: 675,
+            },
+            PartNumber {
+                coord: (
+                    99,
+                    40,
+                ),
+                number: 256,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            37,
+            116,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    36,
+                    118,
+                ),
+                number: 75,
+            },
+            PartNumber {
+                coord: (
+                    38,
+                    117,
+                ),
+                number: 173,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            77,
+            102,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    76,
+                    103,
+                ),
+                number: 693,
+            },
+            PartNumber {
+                coord: (
+                    78,
+                    102,
+                ),
+                number: 152,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            123,
+            53,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    124,
+                    56,
+                ),
+                number: 44,
+            },
+            PartNumber {
+                coord: (
+                    123,
+                    53,
+                ),
+                number: 57,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            105,
+            88,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    106,
+                    90,
+                ),
+                number: 805,
+            },
+            PartNumber {
+                coord: (
+                    104,
+                    90,
+                ),
+                number: 349,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            39,
+            111,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    38,
+                    112,
+                ),
+                number: 467,
+            },
+            PartNumber {
+                coord: (
+                    40,
+                    114,
+                ),
+                number: 114,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            125,
+            101,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    124,
+                    103,
+                ),
+                number: 14,
+            },
+            PartNumber {
+                coord: (
+                    126,
+                    101,
+                ),
+                number: 920,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            12,
+            116,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    13,
+                    119,
+                ),
+                number: 947,
+            },
+            PartNumber {
+                coord: (
+                    11,
+                    118,
+                ),
+                number: 889,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            54,
+            92,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    55,
+                    93,
+                ),
+                number: 10,
+            },
+            PartNumber {
+                coord: (
+                    53,
+                    94,
+                ),
+                number: 364,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            111,
+            96,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    112,
+                    96,
+                ),
+                number: 64,
+            },
+            PartNumber {
+                coord: (
+                    110,
+                    96,
+                ),
+                number: 775,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            88,
+            98,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    87,
+                    100,
+                ),
+                number: 945,
+            },
+            PartNumber {
+                coord: (
+                    89,
+                    102,
+                ),
+                number: 974,
+            },
+        ),
+    },
+    Gear {
+        coord: (
+            121,
+            20,
+        ),
+        part_numbers: (
+            PartNumber {
+                coord: (
+                    120,
+                    21,
+                ),
+                number: 745,
+            },
+            PartNumber {
+                coord: (
+                    122,
+                    20,
+                ),
+                number: 894,
+            },
+        ),
+    },
+]
+thread 'main' panicked at src/main.rs:158:5:
+not yet implemented
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

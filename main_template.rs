@@ -14,17 +14,13 @@ use advent::{InputSnake, FromRegex};
 /// ------
 
 fn part_one_test() {
-    let input =
-r#"
-    part one test input
-"#;
-
-    info!("Part One Test: {:?}", 1);
+    let input = InputSnake::new("test_input");
+    info!("{:?}", 1);
 }
 
 fn part_one() {
     let input = InputSnake::new("input");
-    info!("Part One: {:?}", 1);
+    info!("{:?}", 1);
 }
 
 /// ------
@@ -32,17 +28,13 @@ fn part_one() {
 /// ------
 
 fn part_two_test() {
-    let input =
-r#"
-    part two test input
-"#;
-
-    info!("Part Two Test: {:?}", 2);
+    let input = InputSnake::new("test_input");
+    info!("{:?}", 2);
 }
 
 fn part_two() {
     let input = InputSnake::new("input");
-    info!("Part Two: {:?}", 2);
+    info!("{:?}", 2);
 }
 
 fn main() {

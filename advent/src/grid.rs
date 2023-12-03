@@ -44,6 +44,36 @@ pub enum Direction {
     DownRight,
 }
 
+pub struct GridIterator<'a, T> 
+    where T: std::fmt::Debug {
+
+    grid: &'a Grid<T>,
+    coord: Coord,
+}
+
+pub struct GridCoordinateIterator<'a, T>
+    where T: std::fmt::Debug {
+
+    grid_iter: GridIterator<'a, T>,
+}
+
+impl <'a, T> GridIterator<'a, T>
+    where T: std::fmt::Debug {
+
+    pub fn new(grid: &'a Grid<T>) -> GridIterator<'a, T> {
+        GridIterator {
+            grid,
+            coord: grid.min_xy(),
+        }
+    }
+
+    pub fn coords(self) -> GridCoordinateIterator<'a, T> {
+        GridCoordinateIterator {
+            grid_iter: self,
+        }
+    }
+}
+
 impl Direction {
     pub fn next_coord(self, coord: Coord) -> Coord {
         self.next_coord_by_value(coord, 1)
@@ -123,6 +153,20 @@ impl <T: std::fmt::Debug> Grid<T> {
         ALL_DIRECTIONS.iter()
             .filter_map(|direction| self.entry(direction.next_coord(coord)))
             .collect()
+    }
+
+    pub fn adjacent_coord_entries(&self, coord: Coord) -> Vec<(Coord, &T)> {
+        ALL_DIRECTIONS.iter()
+            .filter_map(|direction| {
+                let next_coord = direction.next_coord(coord);
+                let entry = self.entry(next_coord);
+                entry.map(|e| (next_coord, e))
+            })
+            .collect()
+    }
+
+    pub fn min_xy(&self) -> (i64, i64) {
+        (self.min_x, self.min_y)
     }
 
     pub fn max_xy(&self) -> (i64, i64) {
@@ -212,6 +256,49 @@ impl <T: std::fmt::Debug> Grid<T> {
 
     pub fn read_proxy(&mut self) -> ReadProxy {
         ReadProxy::new(self.input_window.take().expect("Input window was already taken"))
+    }
+
+    pub fn iter(&self) -> GridIterator<T> {
+        GridIterator::new(self)
+    }
+}
+
+
+const ITER_COMPLETE: Coord = (-1, -1);
+
+impl <'a, T: std::fmt::Debug> Iterator for GridIterator<'a, T> {
+    type Item = &'a T;
+
+    fn next(&mut self) -> Option<&'a T> {
+        if self.coord == ITER_COMPLETE {
+            return None
+        }
+
+        let (_min_x, min_y) = self.grid.min_xy();
+        let (max_x, max_y) = self.grid.max_xy();
+        let item = self.grid.entry(self.coord);
+
+        let (next_x, next_y) = if self.coord.0 == max_x && self.coord.1 == max_y {
+            ITER_COMPLETE
+        } else if self.coord.1 + 1 <= max_y {
+            (self.coord.0, self.coord.1 + 1)
+        } else {
+            (self.coord.0 + 1, min_y)
+        };
+
+        self.coord = (next_x, next_y);
+        item
+    }
+}
+
+impl <'a, T: std::fmt::Debug> Iterator for GridCoordinateIterator<'a, T> {
+    type Item = (Coord, &'a T);
+
+    fn next(&mut self) -> Option<(Coord, &'a T)> {
+        let coord = self.grid_iter.coord;
+        let item = self.grid_iter.next();
+
+        item.map(|i| (coord, i))
     }
 }
 
