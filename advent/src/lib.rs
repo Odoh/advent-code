@@ -5,6 +5,7 @@ use std::path::{Path, PathBuf};
 
 pub mod grid;
 pub mod map;
+pub mod snake;
 
 pub trait FromRegex {
     fn from(capture_matches: CaptureMatches) -> Self;
