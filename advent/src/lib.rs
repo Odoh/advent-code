@@ -1,7 +1,9 @@
 use regex::{CaptureMatches, Regex};
+use nom::{Parser, error::ParseError};
 
 use std::{io::{BufReader, BufRead}, fs::File};
 use std::path::{Path, PathBuf};
+use std::marker::PhantomData;
 
 pub mod grid;
 pub mod map;
@@ -17,6 +19,29 @@ pub struct InputSnake {
 
 pub struct GroupIterator {
     line_iter: Box<dyn Iterator<Item = String>>,
+}
+
+pub struct NomOutput<P, O> {
+    pub line: String,
+    pub parser: P,
+    _phantom: PhantomData<O>,
+}
+
+impl <P, O> NomOutput<P, O> 
+    where
+        P: for<'a> nom::Parser<&'a str, O, nom::error::Error<&'a str>> {
+
+    pub fn new(line: String, parser: P) -> Self {
+        NomOutput::<P, O> {
+            line,
+            parser,
+            _phantom: Default::default(),
+        }
+    }
+
+   pub fn parse(&mut self) -> O {
+        self.parser.parse(&self.line).unwrap().1
+   }
 }
 
 impl GroupIterator {
@@ -65,6 +90,14 @@ impl InputSnake {
         let f = File::open(&self.path).expect("Unable to open file at path");
         let f = BufReader::new(f);
         Box::new(f.lines().map(|l| l.unwrap()))
+    }
+
+    /// 🍕🐍
+    pub fn nom_snake<P, O>(&self, parser: P) -> Box<dyn Iterator<Item = NomOutput<P, O>>>
+    where
+        P: for<'a> nom::Parser<&'a str, O, nom::error::Error<&'a str>> + 'static + Copy {
+
+        Box::new(self.snake().map(move |line| NomOutput::new(line, parser)))
     }
 
     /// 🔢🐍
