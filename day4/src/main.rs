@@ -85,32 +85,32 @@ fn generate_copies(cards: &mut Vec<Card>) {
 }
 
 // Hacking away at rust traits
-//
-// pub struct NomOutput<O> {
-//     pub line: String,
-//     pub parser: Box<dyn for<'a> nom::Parser<&'a str, O, nom::error::Error<&'a str>>>,
-// }
-// 
-// impl <O> NomOutput<O> {
-//    pub fn parse(&mut self) -> O {
-//         self.parser.parse(&self.line).unwrap().1
-//    }
-// }
-// 
-// pub struct NomOutputGeneric<P, O> {
-//     pub line: String,
-//     pub parser: P,
-//     _output: PhantomData<O>,
-// }
-// 
-// impl <P, O> NomOutputGeneric<P, O> 
-//     where
-//         P: for<'a> nom::Parser<&'a str, O, nom::error::Error<&'a str>> {
-// 
-//    pub fn parse(&mut self) -> O {
-//         self.parser.parse(&self.line).unwrap().1
-//    }
-// }
+
+pub struct NomOutput<O> {
+    pub line: String,
+    pub parser: Box<dyn for<'a> nom::Parser<&'a str, O, nom::error::Error<&'a str>>>,
+}
+
+impl <O> NomOutput<O> {
+   pub fn parse(&mut self) -> O {
+        self.parser.parse(&self.line).unwrap().1
+   }
+}
+
+pub struct NomOutputGeneric<P, O> {
+    pub line: String,
+    pub parser: P,
+    _output: PhantomData<O>,
+}
+
+impl <P, O> NomOutputGeneric<P, O> 
+    where
+        P: for<'a> nom::Parser<&'a str, O, nom::error::Error<&'a str>> {
+
+   pub fn parse(&mut self) -> O {
+        self.parser.parse(&self.line).unwrap().1
+   }
+}
 
 /// ------
 /// Part 1
@@ -156,6 +156,17 @@ fn part_two() {
     generate_copies(&mut cards);
     let total_cards = cards.iter().fold(0, |acc, card| acc + card.instances);
     info!("{:?}", total_cards);
+
+    let nom_output = NomOutput {
+        line: String::new(),
+        parser: Box::new(parse_card),
+    };
+
+    let nom_output_generic = NomOutputGeneric {
+        line: String::new(),
+        parser: parse_card,
+        _output: Default::default(),
+    };
 }
 
 fn main() {

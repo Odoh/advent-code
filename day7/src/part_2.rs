@@ -74,8 +74,6 @@ fn score_cards<I: Iterator<Item = Card>>(cards: I) -> Score {
             acc
         });
 
-    // info!("{:?}", count_by_rank);
-
     if count_by_rank.len() == 1 {
         return Score::FiveOak;
     }
@@ -108,15 +106,20 @@ impl Hand {
         // explode jokers to hands of all other cards
         let (jacks, non_jacks): (Vec<Card>, Vec<Card>) = self.cards.iter().partition(|c| c.rank == 'J');
 
+        // "A23JJ"
+        //
+        // let ("JJ", "A23")
+        //
+        // NON_JACKS = ["1, 2, 3, 4, 5, 6..."]
+        //
+        //
         // info!("jacks {:?} non_jacks {:?}", jacks, non_jacks);
+        if jacks.len() == 5 {
+            return Score::FiveOak;
+        }
 
-        // dbg!(NON_JACKS.into_iter().cycle().take(NON_JACKS.len() * 2).combinations(2).collect_vec());
-        // todo!();
-
-        let cards_combinations: Vec<Vec<Card>> = NON_JACKS.into_iter()
-            .cycle()
-            .take(NON_JACKS.len() * jacks.len())
-            .combinations(jacks.len())
+        let cards_combinations: Vec<Vec<Card>> = non_jacks.clone().into_iter()
+            .combinations_with_replacement(jacks.len())
             .map(|wild_cards| [non_jacks.clone(), wild_cards].concat())
             .collect();
 

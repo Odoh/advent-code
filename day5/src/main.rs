@@ -23,19 +23,19 @@ struct AlmanacMaps {
 
 #[derive(Debug, Clone, Copy)]
 struct AlmanacMap {
-    destination_range_start: u32,
-    source_range_start: u32,
-    range_len: u32,
+    destination_range_start: u64,
+    source_range_start: u64,
+    range_len: u64,
 }
 
 #[derive(Debug)]
 struct Almanac {
-    seeds: Vec<u32>,
+    seeds: Vec<u64>,
     almanac_maps: Vec<AlmanacMaps>,
 }
 
 impl AlmanacMaps {
-    pub fn get(&self, source: u32) -> u32 {
+    pub fn get(&self, source: u64) -> u64 {
         for map in self.maps.iter() {
             if map.in_range(source) {
                 return map.get(source);
@@ -47,11 +47,11 @@ impl AlmanacMaps {
 }
 
 impl AlmanacMap {
-    pub fn in_range(&self, source: u32) -> bool {
+    pub fn in_range(&self, source: u64) -> bool {
         self.source_range_start <= source && source < self.source_range_start + self.range_len
     }
 
-    pub fn get(&self, source: u32) -> u32 {
+    pub fn get(&self, source: u64) -> u64 {
         if self.source_range_start <= source && source < self.source_range_start + self.range_len {
             let diff = source - self.source_range_start;
             return self.destination_range_start + diff;
@@ -81,7 +81,7 @@ fn parse_almanac(input: &str) -> IResult<&str, Almanac> {
         tag("seeds: "),
         separated_list1(
             space1,
-            nom::character::complete::u32
+            nom::character::complete::u64
         )
     )(input)?;
 
@@ -97,7 +97,7 @@ fn parse_almanac(input: &str) -> IResult<&str, Almanac> {
             newline,
             separated_list1(
                 space1,
-                nom::character::complete::u32,
+                nom::character::complete::u64,
             ).map(|values| AlmanacMap {
                 destination_range_start: *values.get(0).unwrap(),
                 source_range_start: *values.get(1).unwrap(),
@@ -153,8 +153,8 @@ fn part_one() {
 
 #[derive(Debug, Clone, Copy)]
 struct Seeds {
-    range_start: u32,
-    range_len: u32,
+    range_start: u64,
+    range_len: u64,
 }
 
 #[derive(Debug)]
@@ -164,13 +164,13 @@ struct AlmanacTwo {
 }
 
 impl Seeds {
-    pub fn seeds(&self) -> std::ops::Range<u32> {
+    pub fn seeds(&self) -> std::ops::Range<u64> {
         self.range_start..(self.range_start + self.range_len)
     }
 }
 
 impl AlmanacTwo {
-    pub fn all_seeds(&self) -> Box<dyn Iterator<Item=u32>> {
+    pub fn all_seeds(&self) -> Box<dyn Iterator<Item=u64>> {
         Box::new(self.seeds.clone().into_iter()
             .flat_map(|seeds| seeds.seeds()))
     }
@@ -183,9 +183,9 @@ fn parse_almanac_two(input: &str) -> IResult<&str, AlmanacTwo> {
         separated_list1(
             space1,
             separated_pair(
-                nom::character::complete::u32,
+                nom::character::complete::u64,
                 space1,
-                nom::character::complete::u32
+                nom::character::complete::u64
             ).map(|(range_start, range_len)| Seeds {
                 range_start,
                 range_len
@@ -205,7 +205,7 @@ fn parse_almanac_two(input: &str) -> IResult<&str, AlmanacTwo> {
             newline,
             separated_list1(
                 space1,
-                nom::character::complete::u32,
+                nom::character::complete::u64,
             ).map(|values| AlmanacMap {
                 destination_range_start: *values.get(0).unwrap(),
                 source_range_start: *values.get(1).unwrap(),
@@ -228,21 +228,21 @@ fn parse_almanac_two(input: &str) -> IResult<&str, AlmanacTwo> {
 
 #[derive(Debug)]
 struct SeedMap {
-    src: (u32, u32),
-    dst: (u32, u32),
+    src: (u64, u64),
+    dst: (u64, u64),
 }
 
 impl SeedMap {
-    fn get_dst(&self, src: u32) -> u32 {
+    fn get_dst(&self, src: u64) -> u64 {
         debug_assert!(src >= self.src.0 && src <= self.src.1);
         let offset = src - self.src.0;
         self.dst.0 + offset
     }
 }
 
-fn solve(almanac: AlmanacTwo) -> u32 {
+fn solve(almanac: AlmanacTwo) -> u64 {
     // use inclusive ranges
-    let mut seeds: HashSet<(u32, u32)> = almanac.seeds.into_iter()
+    let mut seeds: HashSet<(u64, u64)> = almanac.seeds.into_iter()
         .map(|seed| (seed.range_start, seed.range_start + seed.range_len - 1))
         .collect();
     // dbg!(seeds);
@@ -260,7 +260,6 @@ fn solve(almanac: AlmanacTwo) -> u32 {
 
     // iterate over the almanc maps, in order, updating the ranges of seeds as they are applied
     for (i, almanac_map) in almanac_maps.iter().enumerate() {
-        debug!("Applying almanac_map {}", i);
         let mut mapped_seeds = HashSet::new();
         'seedloop: while !seeds.is_empty() {
             let seed = *seeds.iter().next().unwrap();
@@ -280,9 +279,9 @@ fn solve(almanac: AlmanacTwo) -> u32 {
                     && seed.1 > map.src.1;
 
                 if is_complete_overlap_of_map {
-                    mapped_seeds.insert((seed.0, map.src.0 - 1));
+                    seeds.insert((seed.0, map.src.0 - 1));
                     mapped_seeds.insert((map.get_dst(map.src.0), map.get_dst(map.src.1)));
-                    mapped_seeds.insert((map.src.1 + 1, seed.1));
+                    seeds.insert((map.src.1 + 1, seed.1));
                     debug!("is_complete_map");
                     continue 'seedloop;
                 }
@@ -312,7 +311,7 @@ fn solve(almanac: AlmanacTwo) -> u32 {
                     && seed.1 <= map.src.1;
 
                 if is_left_overlap {
-                    mapped_seeds.insert((seed.0, map.src.0 - 1));
+                    seeds.insert((seed.0, map.src.0 - 1));
                     mapped_seeds.insert((map.get_dst(map.src.0), map.get_dst(seed.1)));
                     debug!("is_left");
                     continue 'seedloop;
@@ -329,7 +328,7 @@ fn solve(almanac: AlmanacTwo) -> u32 {
 
                 if is_right_overlap {
                     mapped_seeds.insert((map.get_dst(seed.0), map.get_dst(map.src.1)));
-                    mapped_seeds.insert((map.src.1 + 1, seed.1));
+                    seeds.insert((map.src.1 + 1, seed.1));
                     debug!("is_right");
                     continue 'seedloop;
                 }
@@ -381,8 +380,8 @@ fn part_two() {
     let no_snake = input.no_snake();
     let (_, almanac) = parse_almanac_two(&no_snake).unwrap();
 
-    let all_seeds = almanac.all_seeds().into_iter().count();
-    info!("all_seeds: {}", all_seeds);
+    // let all_seeds = almanac.all_seeds().into_iter().count();
+    // info!("all_seeds: {}", all_seeds);
     
     // let closest_location = almanac.all_seeds().into_iter()
     //     .enumerate()
