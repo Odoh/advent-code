@@ -1,4 +1,5 @@
 use std::collections::{HashMap, HashSet};
+use itertools::Itertools;
 use pancurses::Window;
 use log::debug;
 
@@ -7,7 +8,7 @@ pub type Coord = (i64, i64);
 
 pub const DRAW_CHAR: fn (Coord, Option<&char>) -> Option<char> = |_, c| c.map(|&c| c);
 
-pub struct Grid<T: std::fmt::Debug> {
+pub struct Grid<T> {
     coord_to_entry: HashMap<Coord, T>,
     not_drawn_coords: HashSet<Coord>,
     min_x: i64, max_x: i64,
@@ -21,6 +22,13 @@ pub enum DrawType<'a> {
     StdOut,
 }
 
+pub const CARDINAL_DIRECTIONS: [Direction; 4] = [
+    Direction::Left,
+    Direction::Right,
+    Direction::Up,
+    Direction::Down,
+];
+
 const ALL_DIRECTIONS: [Direction; 8] = [
     Direction::Left,
     Direction::Right,
@@ -32,7 +40,7 @@ const ALL_DIRECTIONS: [Direction; 8] = [
     Direction::DownRight,
 ];
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum Direction {
     Left,
     Right,
@@ -45,20 +53,20 @@ pub enum Direction {
 }
 
 pub struct GridIterator<'a, T> 
-    where T: std::fmt::Debug {
+    where T: std::fmt::Debug + Eq + PartialEq {
 
     grid: &'a Grid<T>,
     coord: Coord,
 }
 
 pub struct GridCoordinateIterator<'a, T>
-    where T: std::fmt::Debug {
+    where T: std::fmt::Debug + Eq + PartialEq {
 
     grid_iter: GridIterator<'a, T>,
 }
 
 impl <'a, T> GridIterator<'a, T>
-    where T: std::fmt::Debug {
+    where T: std::fmt::Debug + Eq + PartialEq {
 
     pub fn new(grid: &'a Grid<T>) -> GridIterator<'a, T> {
         GridIterator {
@@ -81,15 +89,29 @@ impl Direction {
 
     pub fn next_coord_by_value(self, coord: Coord, value: i64) -> Coord {
         match self {
-            Direction::Left => (coord.0 - value, coord.1),
-            Direction::Right => (coord.0 + value, coord.1),
-            Direction::Up => (coord.0, coord.1 - value),
-            Direction::Down => (coord.0, coord.1 + value),
-            Direction::UpLeft => (coord.0 - value, coord.1 - value),
-            Direction::UpRight => (coord.0 + value, coord.1 - value),
-            Direction::DownLeft => (coord.0 - value, coord.1 + value),
-            Direction::DownRight => (coord.0 + value, coord.1 + value),
+            Direction::Up => (coord.0 - value, coord.1),
+            Direction::Down => (coord.0 + value, coord.1),
+            Direction::Left => (coord.0, coord.1 - value),
+            Direction::Right => (coord.0, coord.1 + value),
+            Direction::DownRight => (coord.0 - value, coord.1 - value),
+            Direction::DownLeft => (coord.0 + value, coord.1 - value),
+            Direction::UpRight => (coord.0 - value, coord.1 + value),
+            Direction::UpLeft => (coord.0 + value, coord.1 + value),
         }
+    }
+
+    pub fn get_opposite(&self) -> Direction {
+        match self {
+            Direction::Left => Direction::Right,
+            Direction::Right => Direction::Left,
+            Direction::Up => Direction::Down,
+            Direction::Down => Direction::Up,
+            Direction::UpLeft => Direction::DownRight,
+            Direction::UpRight => Direction::DownLeft,
+            Direction::DownLeft => Direction::UpRight,
+            Direction::DownRight => Direction::UpLeft,
+        }
+
     }
 }
 
@@ -107,7 +129,9 @@ pub struct ReadProxy {
     input_window: Window,
 }
 
-impl <T: std::fmt::Debug> Grid<T> {
+impl <T>  Grid<T> 
+    where T: std::fmt::Debug + Eq + PartialEq {
+
     pub fn new() -> Grid<T> {
         Grid {
             coord_to_entry: HashMap::new(),
@@ -123,11 +147,17 @@ impl <T: std::fmt::Debug> Grid<T> {
         self.coord_to_entry.get(&coord)
     }
 
+    pub fn next_location(&self, coord: Coord, direction: Direction) -> (Coord, Option<&T>) {
+        let next_coord = direction.next_coord(coord);
+        let next_entry = self.entry(next_coord);
+        (next_coord, next_entry)
+    }
+
     pub fn entries(&self) -> Vec<&T> {
         self.coord_to_entry.values().collect()
     }
 
-    pub fn coord_entries(&self) -> Vec<(Coord, &T)> {
+    pub fn locations(&self) -> Vec<(Coord, &T)> {
         self.coord_to_entry.iter().map(|(c, t)| (*c, t)).collect()
     }
 
@@ -149,14 +179,22 @@ impl <T: std::fmt::Debug> Grid<T> {
             .collect()
     }
 
-    pub fn adjacent_entries(&self, coord: Coord) -> Vec<&T> {
+    pub fn all_adjacent_entries(&self, coord: Coord) -> Vec<&T> {
         ALL_DIRECTIONS.iter()
             .filter_map(|direction| self.entry(direction.next_coord(coord)))
             .collect()
     }
 
-    pub fn adjacent_coord_entries(&self, coord: Coord) -> Vec<(Coord, &T)> {
-        ALL_DIRECTIONS.iter()
+    pub fn all_adjacent_locations(&self, coord: Coord) -> Vec<(Coord, &T)> {
+        self.adjacent_locations(&ALL_DIRECTIONS[..], coord)
+    }
+
+    pub fn adjacent_cardinal_locations(&self, coord: Coord) -> Vec<(Coord, &T)> {
+        self.adjacent_locations(&CARDINAL_DIRECTIONS[..], coord)
+    }
+
+    fn adjacent_locations(&self, directions: &[Direction], coord: Coord) -> Vec<(Coord, &T)> {
+        directions.iter()
             .filter_map(|direction| {
                 let next_coord = direction.next_coord(coord);
                 let entry = self.entry(next_coord);
@@ -209,7 +247,7 @@ impl <T: std::fmt::Debug> Grid<T> {
         }
     }
 
-    pub fn draw(&mut self, entry_char: fn (Coord, Option<&T>) -> Option<char>) {
+    pub fn draw(&mut self, entry_char: impl Fn(Coord, Option<&T>) -> Option<char>) {
         for x in self.min_x..=self.max_x {
             for y in self.min_y..=self.max_y {
                 let coord: Coord = (x, y);
@@ -261,12 +299,21 @@ impl <T: std::fmt::Debug> Grid<T> {
     pub fn iter(&self) -> GridIterator<T> {
         GridIterator::new(self)
     }
+
+    pub fn position(&self, entry: T) -> Coord {
+        let coords = self.coord_to_entry.iter()
+            .filter_map(|(c, v)| if *v == entry { Some(c) } else { None })
+            .collect_vec();
+        debug_assert_eq!(coords.len(), 1);
+
+        **coords.get(0).unwrap()
+    }
 }
 
 
 const ITER_COMPLETE: Coord = (-1, -1);
 
-impl <'a, T: std::fmt::Debug> Iterator for GridIterator<'a, T> {
+impl <'a, T: std::fmt::Debug + Eq + PartialEq> Iterator for GridIterator<'a, T> {
     type Item = &'a T;
 
     fn next(&mut self) -> Option<&'a T> {
@@ -291,7 +338,7 @@ impl <'a, T: std::fmt::Debug> Iterator for GridIterator<'a, T> {
     }
 }
 
-impl <'a, T: std::fmt::Debug> Iterator for GridCoordinateIterator<'a, T> {
+impl <'a, T: std::fmt::Debug + Eq + PartialEq> Iterator for GridCoordinateIterator<'a, T> {
     type Item = (Coord, &'a T);
 
     fn next(&mut self) -> Option<(Coord, &'a T)> {
